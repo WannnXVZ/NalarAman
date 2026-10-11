@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD NalarAman — Product Requirements Document</title>
+<style>
+  :root{
+    --primary-purple:#6D28D9;
+    --accent-purple:#8B5CF6;
+    --dark-purple:#2E1065;
+    --lavender-bg:#F5F3FF;
+    --white:#FFFFFF;
+    --text-primary:#172033;
+    --text-secondary:#64748B;
+    --border-neutral:#E5E7EB;
+    --border-lavender:#DDD6FE;
+    --risk-low:#15803D;
+    --risk-low-bg:#DCFCE7;
+    --risk-med:#B45309;
+    --risk-med-bg:#FEF3C7;
+    --risk-high:#B91C1C;
+    --risk-high-bg:#FEE2E2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background:var(--lavender-bg); color:var(--text-primary); line-height:1.65;
+  }
+  header.hero{
+    background:linear-gradient(135deg,var(--dark-purple),var(--primary-purple));
+    color:#fff; padding:48px 24px 40px; text-align:center;
+  }
+  header.hero h1{margin:0 0 8px; font-size:2.1rem; letter-spacing:.5px;}
+  header.hero p.tagline{margin:4px 0; font-size:1.05rem; opacity:.95; font-style:italic;}
+  header.hero p.desc{margin:4px 0 0; font-size:.95rem; opacity:.85;}
+  .meta-bar{
+    display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:18px;
+  }
+  .meta-pill{
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.35);
+    border-radius:999px; padding:6px 14px; font-size:.78rem;
+  }
+  .layout{display:flex; max-width:1400px; margin:0 auto;}
+  nav.toc{
+    width:300px; flex-shrink:0; background:var(--white); border-right:1px solid var(--border-neutral);
+    padding:24px 18px; position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  nav.toc h2{font-size:.95rem; color:var(--dark-purple); text-transform:uppercase; letter-spacing:.6px; margin-top:0;}
+  nav.toc ol{list-style:none; padding-left:0; margin:0; counter-reset:item;}
+  nav.toc li{margin-bottom:4px;}
+  nav.toc a{
+    text-decoration:none; color:var(--text-secondary); font-size:.84rem; display:block;
+    padding:5px 8px; border-radius:6px;
+  }
+  nav.toc a:hover{background:var(--lavender-bg); color:var(--primary-purple);}
+  main{flex:1; padding:32px 40px 80px; max-width:1100px;}
+  section.chapter{margin-bottom:56px; scroll-margin-top:16px;}
+  section.chapter h2{
+    color:var(--dark-purple); font-size:1.5rem; border-bottom:3px solid var(--accent-purple);
+    padding-bottom:8px; margin-top:0;
+  }
+  section.chapter h3{color:var(--primary-purple); font-size:1.15rem; margin-top:28px;}
+  section.chapter h4{color:var(--text-primary); font-size:1rem; margin-top:18px;}
+  p{margin:10px 0;}
+  .card{
+    background:var(--white); border:1px solid var(--border-lavender); border-radius:12px;
+    padding:20px 22px; margin:16px 0; box-shadow:0 1px 3px rgba(46,16,101,.06);
+  }
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-size:.88rem; background:var(--white);}
+  table caption{caption-side:top; text-align:left; font-weight:600; color:var(--dark-purple); margin-bottom:6px;}
+  th,td{border:1px solid var(--border-neutral); padding:9px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--lavender-bg); color:var(--dark-purple); font-weight:600;}
+  tr:nth-child(even) td{background:#FBFAFF;}
+  .table-wrap{overflow-x:auto;}
+  code, pre{font-family:'Cascadia Code','Fira Code',Consolas,monospace; font-size:.83rem;}
+  pre{
+    background:var(--dark-purple); color:#F3E8FF; padding:16px 18px; border-radius:10px;
+    overflow-x:auto; line-height:1.5;
+  }
+  code.inline{background:var(--lavender-bg); color:var(--dark-purple); padding:2px 6px; border-radius:4px;}
+  .callout{
+    border-left:4px solid var(--accent-purple); background:var(--lavender-bg);
+    padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.9rem;
+  }
+  .callout.warn{border-left-color:#D97706; background:#FFFBEB;}
+  .callout.danger{border-left-color:#DC2626; background:#FEF2F2;}
+  .callout.need-validation{border-left-color:#6D28D9; background:#F5F3FF;}
+  .tag{
+    display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.4px;
+    padding:3px 9px; border-radius:999px; text-transform:uppercase; margin-right:6px;
+  }
+  .tag-validate{background:#EDE9FE; color:var(--dark-purple); border:1px solid var(--border-lavender);}
+  .tag-mvp{background:#DCFCE7; color:var(--risk-low); border:1px solid #BBF7D0;}
+  .tag-future{background:#E0F2FE; color:#0369A1; border:1px solid #BAE6FD;}
+  .tag-illustrative{background:#FEF3C7; color:var(--risk-med); border:1px solid #FDE68A;}
+  .risk-chip{display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:999px; font-size:.8rem; font-weight:600;}
+  .risk-low{background:var(--risk-low-bg); color:var(--risk-low);}
+  .risk-med{background:var(--risk-med-bg); color:var(--risk-med);}
+  .risk-high{background:var(--risk-high-bg); color:var(--risk-high);}
+  .color-swatch{
+    display:inline-block; width:18px; height:18px; border-radius:4px; vertical-align:middle;
+    margin-right:8px; border:1px solid rgba(0,0,0,.08);
+  }
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .step-box{
+    background:var(--white); border:1px solid var(--border-lavender); border-radius:10px;
+    padding:12px 14px; font-size:.85rem;
+  }
+  .step-box b{color:var(--primary-purple);}
+  svg text{font-family:'Segoe UI',sans-serif;}
+  .diagram-wrap{overflow-x:auto; background:var(--white); border:1px solid var(--border-neutral); border-radius:12px; padding:14px;}
+  footer{text-align:center; padding:28px; color:var(--text-secondary); font-size:.8rem; border-top:1px solid var(--border-neutral);}
+  a.backref{font-size:.75rem; color:var(--accent-purple); text-decoration:none;}
+  ul,ol{margin:8px 0; padding-left:22px;}
+  li{margin-bottom:4px;}
+  @media (max-width:980px){
+    .layout{flex-direction:column;}
+    nav.toc{width:100%; height:auto; position:relative; border-right:none; border-bottom:1px solid var(--border-neutral);}
+    main{padding:24px 18px 60px;}
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>NalarAman</h1>
+  <p class="tagline">&ldquo;Kenali Risikonya, Pahami Alasannya.&rdquo;</p>
+  <p class="desc">Platform Deteksi Penipuan Digital Berbasis Explainable AI</p>
+  <div class="meta-bar">
+    <span class="meta-pill">Dokumen: Product Requirements Document (PRD)</span>
+    <span class="meta-pill">Versi 0.1.0 — Draft Awal</span>
+    <span class="meta-pill">Tanggal Penyusunan: 11 Oktober 2026</span>
+    <span class="meta-pill">Status: Draft untuk Tinjauan</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#bab1">1. Ringkasan Eksekutif</a></li>
+    <li><a href="#bab2">2. Latar Belakang</a></li>
+    <li><a href="#bab3">3. Rumusan Masalah</a></li>
+    <li><a href="#bab4">4. Visi dan Tujuan Produk</a></li>
+    <li><a href="#bab5">5. Identitas dan Positioning</a></li>
+    <li><a href="#bab6">6. Target Pengguna</a></li>
+    <li><a href="#bab7">7. Ruang Lingkup dan Batasan</a></li>
+    <li><a href="#bab8">8. User Stories</a></li>
+    <li><a href="#bab9">9. Use Cases</a></li>
+    <li><a href="#bab10">10. Functional Requirements</a></li>
+    <li><a href="#bab11">11. Non-Functional Requirements</a></li>
+    <li><a href="#bab12">12. User Flow</a></li>
+    <li><a href="#bab13">13. UI/UX dan Design System</a></li>
+    <li><a href="#bab14">14. Arsitektur Sistem</a></li>
+    <li><a href="#bab15">15. Spesifikasi Frontend</a></li>
+    <li><a href="#bab16">16. Spesifikasi Backend</a></li>
+    <li><a href="#bab17">17. Spesifikasi API</a></li>
+    <li><a href="#bab18">18. Dataset dan Anotasi</a></li>
+    <li><a href="#bab19">19. Pipeline AI/ML</a></li>
+    <li><a href="#bab20">20. Klasifikasi Pesan</a></li>
+    <li><a href="#bab21">21. Deteksi Pola Social Engineering</a></li>
+    <li><a href="#bab22">22. Explainable AI (LIME)</a></li>
+    <li><a href="#bab23">23. Penilaian Risiko</a></li>
+    <li><a href="#bab24">24. OCR dan Analisis Screenshot</a></li>
+    <li><a href="#bab25">25. Kontrak Data</a></li>
+    <li><a href="#bab26">26. Keamanan dan Privasi</a></li>
+    <li><a href="#bab27">27. Strategi Pengujian</a></li>
+    <li><a href="#bab28">28. Evaluasi Model</a></li>
+    <li><a href="#bab29">29. Struktur Folder Proyek</a></li>
+    <li><a href="#bab30">30. Roadmap Implementasi</a></li>
+    <li><a href="#bab31">31. Acceptance Criteria</a></li>
+    <li><a href="#bab32">32. Definition of Done</a></li>
+    <li><a href="#bab33">33. Risiko dan Mitigasi</a></li>
+    <li><a href="#bab34">34. Keterbatasan Sistem</a></li>
+    <li><a href="#bab35">35. Pengembangan Masa Depan</a></li>
+    <li><a href="#bab36">36. Glosarium</a></li>
+    <li><a href="#bab37">37. Lampiran Teknis</a></li>
+  </ol>
+</nav>
+<main>
+<section class="chapter" id="bab1">
+<h2>1. Ringkasan Eksekutif</h2>
+<div class="card">
+<p><b>NalarAman</b> adalah prototipe penelitian berupa platform deteksi penipuan digital berbasis Explainable AI (XAI) yang ditujukan untuk membantu masyarakat Indonesia memeriksa pesan digital (WhatsApp, SMS, email, media sosial, transaksi jual beli) yang berpotensi mengandung penipuan atau <i>social engineering</i>. Dokumen ini merupakan PRD (Product Requirements Document) yang menjadi acuan implementasi bertahap, bukan laporan hasil eksperimen maupun aplikasi yang sudah berjalan.</p>
+<p>MVP NalarAman berfokus pada <b>analisis teks</b>: pengguna menempelkan atau mengetik pesan, sistem mengklasifikasikan pesan ke dalam kategori <i>Normal</i>, <i>Scam</i>, atau <i>Promosi</i>, mendeteksi indikator pola <i>social engineering</i>, menampilkan tingkat risiko (rendah/sedang/tinggi) berdasarkan aturan terdokumentasi, dan — jika komponen XAI tersedia — menjelaskan kontribusi kata/frasa terhadap prediksi menggunakan LIME. Fitur analisis screenshot via OCR (Tesseract) direncanakan sebagai pengembangan lanjutan setelah MVP teks stabil.</p>
+<p>Seluruh klaim kemampuan dalam dokumen ini dibatasi secara ketat: <b>dataset belum tersedia dan belum diverifikasi</b>, <b>model belum dilatih</b>, dan <b>belum ada hasil evaluasi aktual</b>. Setiap keputusan yang belum memiliki dasar pengujian ditandai dengan label <span class="tag tag-validate">[PERLU VALIDASI]</span>.</p>
+</div>
+</section>
+
+<section class="chapter" id="bab2">
+<h2>2. Latar Belakang</h2>
+<p>Penipuan digital berbasis <i>social engineering</i> — penyamaran identitas, iming-iming hadiah, ancaman, dan tekanan waktu — terus berkembang di berbagai kanal pesan berbahasa Indonesia. Pengguna awam seringkali kesulitan membedakan pesan yang sah dari pesan manipulatif karena pola bahasa yang digunakan pelaku terus berubah dan menyamar menyerupai komunikasi resmi.</p>
+<p>Konteks penelitian yang mendasari NalarAman adalah: <i>&ldquo;Pengembangan Explainable Artificial Intelligence untuk Deteksi dan Penilaian Risiko Penipuan Digital Berbasis Analisis Pola Social Engineering pada Pesan Berbahasa Indonesia.&rdquo;</i> Penelitian ini tidak hanya berupaya mengklasifikasikan pesan, tetapi juga menjelaskan <i>mengapa</i> sebuah pesan dianggap berisiko — sebuah kebutuhan penting mengingat model <i>black-box</i> konvensional sulit dipercaya pengguna awam tanpa penjelasan yang transparan.</p>
+<p>NalarAman diposisikan sebagai alat bantu pemeriksaan awal (<i>decision support</i>), bukan otoritas yang memberi vonis mutlak atas keamanan sebuah pesan.</p>
+</section>
+
+<section class="chapter" id="bab3">
+<h2>3. Rumusan Masalah</h2>
+<ol>
+<li>Bagaimana mengklasifikasikan pesan berbahasa Indonesia ke dalam kategori Normal, Scam, atau Promosi secara akurat menggunakan model yang benar-benar dilatih dan dievaluasi?</li>
+<li>Bagaimana mengidentifikasi indikator pola <i>social engineering</i> pada teks pesan secara terdokumentasi dan dapat diuji, terlepas dari klasifikasi kelas pesan?</li>
+<li>Bagaimana merumuskan mekanisme penilaian risiko (rendah/sedang/tinggi) yang transparan, dapat ditinjau, dan tidak sembarangan dalam menentukan ambang batasnya?</li>
+<li>Bagaimana menjelaskan prediksi model klasifikasi kepada pengguna nonteknis menggunakan metode <i>Explainable AI</i> (LIME) tanpa menyesatkan interpretasi pengguna?</li>
+<li>Bagaimana merancang antarmuka yang sederhana dan jujur — tidak menampilkan hasil AI yang belum benar-benar dihasilkan oleh model aktif?</li>
+<li>Bagaimana memperluas kapabilitas sistem agar dapat menerima input dalam bentuk screenshot percakapan melalui OCR, dengan tetap memberi ruang koreksi kepada pengguna?</li>
+</ol>
+</section>
+
+<section class="chapter" id="bab4">
+<h2>4. Visi dan Tujuan Produk</h2>
+<div class="card">
+<h3>Visi</h3>
+<p>Menjadi alat bantu yang membuat masyarakat Indonesia lebih kritis dan paham risiko ketika menerima pesan digital yang mencurigakan, melalui penjelasan yang transparan dan dapat dipertanggungjawabkan — bukan sekadar label &ldquo;aman&rdquo; atau &ldquo;bahaya&rdquo;.</p>
+<h3>Tujuan Produk</h3>
+<ol>
+<li>Mengklasifikasikan pesan ke dalam kategori Normal, Scam, atau Promosi.</li>
+<li>Mengidentifikasi indikator pola <i>social engineering</i>.</li>
+<li>Menampilkan tingkat risiko rendah, sedang, atau tinggi berdasarkan mekanisme yang transparan dan telah diuji.</li>
+<li>Memberikan penjelasan prediksi model menggunakan LIME apabila komponen tersebut tersedia.</li>
+<li>Menyediakan antarmuka web yang sederhana, responsif, dan mudah digunakan oleh pengguna nonteknis.</li>
+<li>Mendukung analisis screenshot percakapan melalui OCR sebagai tahap pengembangan lanjutan.</li>
+<li>Membantu pengguna memahami alasan suatu pesan perlu diperiksa lebih lanjut, bukan memberi jaminan mutlak aman/penipuan.</li>
+</ol>
+</div>
+</section>
+
+<section class="chapter" id="bab5">
+<h2>5. Identitas dan Positioning NalarAman</h2>
+<table>
+<caption>Identitas Produk</caption>
+<tr><th>Atribut</th><th>Nilai</th></tr>
+<tr><td>Nama Produk</td><td>NalarAman (penulisan konsisten, satu kata gabungan dengan huruf kapital di N dan A)</td></tr>
+<tr><td>Tagline</td><td>&ldquo;Kenali Risikonya, Pahami Alasannya.&rdquo;</td></tr>
+<tr><td>Deskripsi</td><td>Platform Deteksi Penipuan Digital Berbasis Explainable AI</td></tr>
+<tr><td>Kategori</td><td>Prototipe penelitian / Decision-support tool, bukan produk komersial siap pasar</td></tr>
+<tr><td>Positioning</td><td>Alat bantu edukatif dan analitis, melengkapi — bukan menggantikan — verifikasi melalui saluran resmi (bank, e-commerce, call center)</td></tr>
+</table>
+<div class="callout">NalarAman secara eksplisit <b>bukan</b> otoritas keamanan siber dan tidak memberikan jaminan mutlak. Positioning ini harus konsisten tercermin di seluruh salinan UI, dokumentasi, dan komunikasi hasil analisis.</div>
+</section>
+
+<section class="chapter" id="bab6">
+<h2>6. Target Pengguna</h2>
+<p>Target pengguna utama adalah <b>masyarakat umum berbahasa Indonesia</b> yang ingin memeriksa pesan mencurigakan sebelum bertindak lebih jauh (mengklik tautan, mentransfer uang, membagikan data pribadi).</p>
+<div class="grid-3">
+  <div class="step-box"><b>Persona A — Pengguna Transaksi Online</b><br>Pembeli/penjual daring yang menerima pesan terkait pembayaran, konfirmasi pengiriman, atau tautan pelacakan mencurigakan.</div>
+  <div class="step-box"><b>Persona B — Pengguna Umum Media Sosial/Chat</b><br>Penerima pesan berantai, tawaran hadiah, atau pesan yang mengaku dari instansi resmi.</div>
+  <div class="step-box"><b>Persona C — Pendamping Keluarga</b><br>Anggota keluarga yang membantu memeriksakan pesan mencurigakan yang diterima kerabat lanjut usia atau kurang melek digital.</div>
+</div>
+<p><b>Sumber pesan</b> yang mungkin diperiksa: WhatsApp, SMS, email, pesan media sosial, pesan transaksi jual beli, dan pesan digital lain yang teksnya dapat diekstraksi. <span class="tag tag-validate">Catatan</span>: penyebutan platform di atas tidak berarti NalarAman terintegrasi langsung dengan platform tersebut — pengguna memasukkan teks secara manual atau mengunggah screenshot yang relevan.</p>
+</section>
+
+<section class="chapter" id="bab7">
+<h2>7. Ruang Lingkup dan Batasan</h2>
+<h3>7.1 Dalam Lingkup (MVP) <span class="tag tag-mvp">MVP</span></h3>
+<ul>
+<li>Input dan analisis teks pesan (ketik atau tempel).</li>
+<li>Klasifikasi tiga kelas: Normal, Scam, Promosi.</li>
+<li>Deteksi indikator pola <i>social engineering</i>.</li>
+<li>Penilaian risiko berbasis aturan terdokumentasi.</li>
+<li>Penjelasan LIME (setelah model dan pipeline XAI terintegrasi).</li>
+<li>Antarmuka web responsif untuk desktop, tablet, dan ponsel.</li>
+</ul>
+<h3>7.2 Pengembangan Lanjutan <span class="tag tag-future">Lanjutan</span></h3>
+<ul>
+<li>Unggah dan analisis screenshot percakapan menggunakan OCR (Tesseract).</li>
+<li>Editor koreksi teks hasil OCR sebelum analisis.</li>
+</ul>
+<h3>7.3 Di Luar Lingkup</h3>
+<p>Fitur berikut <b>tidak</b> menjadi kebutuhan wajib pada tahap ini dan hanya dicatat sebagai kemungkinan pengembangan masa depan (lihat Bab 35):</p>
+<ul>
+<li>Login dan registrasi pengguna.</li>
+<li>Dashboard admin.</li>
+<li>Penyimpanan riwayat analisis dan database pengguna.</li>
+<li>Chatbot konsultasi.</li>
+<li>Notifikasi otomatis.</li>
+<li>Integrasi langsung ke akun WhatsApp, SMS, email, atau media sosial.</li>
+<li>Ekstensi browser.</li>
+<li>Pelaporan otomatis kepada pihak berwenang.</li>
+<li>Sistem pembayaran dan monetisasi.</li>
+</ul>
+</section>
+<section class="chapter" id="bab8">
+<h2>8. User Stories</h2>
+<div class="table-wrap">
+<table>
+<caption>User Stories MVP</caption>
+<tr><th>ID</th><th>Sebagai</th><th>Saya ingin</th><th>Agar</th><th>Prioritas</th></tr>
+<tr><td>US-01</td><td>Pengguna umum</td><td>menempelkan teks pesan mencurigakan ke kolom analisis</td><td>saya bisa memeriksa apakah pesan tersebut berpotensi penipuan</td><td>Wajib</td></tr>
+<tr><td>US-02</td><td>Pengguna umum</td><td>melihat klasifikasi pesan (Normal/Scam/Promosi)</td><td>saya mendapat gambaran awal kategori pesan</td><td>Wajib</td></tr>
+<tr><td>US-03</td><td>Pengguna umum</td><td>melihat daftar indikator pola social engineering yang terdeteksi</td><td>saya paham bagian mana dari pesan yang mencurigakan</td><td>Wajib</td></tr>
+<tr><td>US-04</td><td>Pengguna umum</td><td>melihat tingkat risiko (rendah/sedang/tinggi)</td><td>saya bisa memutuskan tindakan selanjutnya secara proporsional</td><td>Wajib</td></tr>
+<tr><td>US-05</td><td>Pengguna umum</td><td>melihat penjelasan bagian teks yang memengaruhi prediksi model</td><td>saya memahami dasar keputusan sistem, bukan sekadar label</td><td>Wajib (jika XAI tersedia)</td></tr>
+<tr><td>US-06</td><td>Pengguna umum</td><td>mendapat peringatan keterbatasan hasil</td><td>saya tidak terlalu percaya diri pada hasil otomatis</td><td>Wajib</td></tr>
+<tr><td>US-07</td><td>Pengguna nonteknis</td><td>mengunggah screenshot percakapan</td><td>saya tidak perlu mengetik ulang pesan panjang</td><td>Lanjutan</td></tr>
+<tr><td>US-08</td><td>Pengguna nonteknis</td><td>mengoreksi hasil ekstraksi OCR sebelum dianalisis</td><td>analisis dijalankan atas teks yang benar</td><td>Lanjutan</td></tr>
+<tr><td>US-09</td><td>Pengguna</td><td>mendapat pesan error yang jelas saat backend/model tidak tersedia</td><td>saya tahu harus mencoba lagi, bukan mengira hasil palsu adalah hasil nyata</td><td>Wajib</td></tr>
+</table>
+</div>
+</section>
+
+<section class="chapter" id="bab9">
+<h2>9. Use Cases</h2>
+<div class="card">
+<h3>UC-01: Analisis Teks Pesan</h3>
+<p><b>Aktor:</b> Pengguna umum. <b>Precondition:</b> Halaman NalarAman terbuka, backend dan model tersedia.</p>
+<ol>
+<li>Pengguna memasukkan teks pesan ke kolom input.</li>
+<li>Pengguna menekan tombol &ldquo;Analisis&rdquo;.</li>
+<li>Sistem memvalidasi input tidak kosong dan dalam batas panjang.</li>
+<li>Sistem mengirim request ke endpoint <code class="inline">/api/v1/analyze</code>.</li>
+<li>Backend menjalankan pipeline klasifikasi, deteksi pola, penilaian risiko, dan LIME.</li>
+<li>Sistem menampilkan hasil kepada pengguna disertai peringatan keterbatasan.</li>
+</ol>
+<p><b>Alternate flow:</b> jika input kosong → sistem menampilkan pesan validasi dan tidak mengirim request. Jika backend/model tidak tersedia → sistem menampilkan status error yang jelas, bukan hasil palsu.</p>
+</div>
+<div class="card">
+<h3>UC-02: Analisis Screenshot (Lanjutan) <span class="tag tag-future">Lanjutan</span></h3>
+<p><b>Aktor:</b> Pengguna umum. <b>Precondition:</b> Fitur OCR telah diimplementasikan dan aktif.</p>
+<ol>
+<li>Pengguna memilih mode screenshot dan mengunggah gambar.</li>
+<li>Sistem memvalidasi format dan ukuran file, menampilkan preview.</li>
+<li>Sistem menjalankan OCR dan menampilkan hasil ekstraksi di kolom teks yang dapat diedit.</li>
+<li>Pengguna memeriksa/mengoreksi teks, lalu menekan &ldquo;Konfirmasi &amp; Analisis&rdquo;.</li>
+<li>Backend menjalankan pipeline analisis teks yang sama dengan UC-01.</li>
+<li>Sistem menampilkan hasil klasifikasi, indikator pola, risiko, dan penjelasan yang tersedia.</li>
+</ol>
+<p><b>Alternate flow:</b> file tidak valid/rusak → ditolak dengan pesan jelas. OCR tidak menemukan teks → status &ldquo;OCR failed&rdquo; ditampilkan, pengguna dapat mengetik manual sebagai alternatif.</p>
+</div>
+</section>
+
+<section class="chapter" id="bab10">
+<h2>10. Functional Requirements</h2>
+<div class="table-wrap">
+<table>
+<caption>Daftar Functional Requirements (FR)</caption>
+<tr><th>ID</th><th>Deskripsi</th><th>Modul</th><th>Status</th></tr>
+<tr><td>FR-01</td><td>Sistem menyediakan kolom input teks dengan validasi kosong dan batas panjang karakter.</td><td>Frontend</td><td>MVP</td></tr>
+<tr><td>FR-02</td><td>Sistem menampilkan indikator loading selama proses analisis berlangsung.</td><td>Frontend</td><td>MVP</td></tr>
+<tr><td>FR-03</td><td>Sistem mengklasifikasikan teks ke kategori Normal/Scam/Promosi menggunakan model aktual.</td><td>Backend/ML</td><td>MVP</td></tr>
+<tr><td>FR-04</td><td>Sistem mendeteksi indikator pola social engineering berdasarkan pendekatan terdokumentasi.</td><td>Backend</td><td>MVP</td></tr>
+<tr><td>FR-05</td><td>Sistem menilai tingkat risiko (rendah/sedang/tinggi) berdasarkan aturan yang dapat ditinjau.</td><td>Backend</td><td>MVP</td></tr>
+<tr><td>FR-06</td><td>Sistem menampilkan penjelasan LIME jika komponen XAI aktif dan berhasil menghasilkan output.</td><td>Backend/ML</td><td>MVP (kondisional)</td></tr>
+<tr><td>FR-07</td><td>Sistem menampilkan pesan error yang jelas saat backend, model, atau LIME tidak tersedia.</td><td>Frontend/Backend</td><td>MVP</td></tr>
+<tr><td>FR-08</td><td>Sistem menyediakan health endpoint yang membedakan status backend aktif dan status model siap.</td><td>Backend</td><td>MVP</td></tr>
+<tr><td>FR-09</td><td>Sistem menerima unggahan gambar screenshot dan memvalidasi format/ukuran.</td><td>Frontend/Backend</td><td>Lanjutan</td></tr>
+<tr><td>FR-10</td><td>Sistem mengekstraksi teks dari gambar menggunakan OCR dan menampilkannya untuk dikoreksi.</td><td>Backend/OCR</td><td>Lanjutan</td></tr>
+<tr><td>FR-11</td><td>Sistem menjalankan pipeline analisis teks yang sama terhadap hasil OCR yang telah dikonfirmasi pengguna.</td><td>Backend</td><td>Lanjutan</td></tr>
+<tr><td>FR-12</td><td>Sistem tidak menyimpan pesan pengguna secara permanen tanpa kebutuhan dan persetujuan eksplisit.</td><td>Backend</td><td>MVP</td></tr>
+</table>
+</div>
+</section>
+
+<section class="chapter" id="bab11">
+<h2>11. Non-Functional Requirements</h2>
+<div class="table-wrap">
+<table>
+<caption>Non-Functional Requirements</caption>
+<tr><th>Kategori</th><th>Kebutuhan</th><th>Status Target</th></tr>
+<tr><td>Usability</td><td>Antarmuka dapat digunakan oleh pengguna nonteknis tanpa pelatihan khusus.</td><td>Ditetapkan</td></tr>
+<tr><td>Responsivitas</td><td>Tampilan berfungsi baik pada desktop, tablet, dan ponsel (breakpoint ≥360px).</td><td>Ditetapkan</td></tr>
+<tr><td>Maintainability</td><td>Pemisahan modul frontend/backend/ML memudahkan perubahan tanpa efek samping luas.</td><td>Ditetapkan</td></tr>
+<tr><td>Reliability</td><td>Backend menangani kegagalan model/LIME tanpa membuat seluruh request gagal total.</td><td>Ditetapkan</td></tr>
+<tr><td>Kejelasan hasil</td><td>Setiap hasil (klasifikasi, pola, risiko, LIME) ditampilkan terpisah dengan label sumbernya.</td><td>Ditetapkan</td></tr>
+<tr><td>Aksesibilitas dasar</td><td>Kontras warna memadai, label form, navigasi keyboard dasar.</td><td>Ditetapkan</td></tr>
+<tr><td>Privasi</td><td>Tidak ada penyimpanan permanen pesan pengguna tanpa persetujuan; log tidak memuat isi pesan sensitif.</td><td>Ditetapkan</td></tr>
+<tr><td>Error handling</td><td>Semua jalur gagal (model, LIME, OCR, API) memiliki pesan yang jelas dan tidak membocorkan detail internal.</td><td>Ditetapkan</td></tr>
+<tr><td>Waktu respons</td><td>Target waktu respons analisis teks <span class="tag tag-validate">[PERLU VALIDASI]</span> — harus diukur pada perangkat pengujian nyata.</td><td>Perlu diuji</td></tr>
+<tr><td>Reproduksibilitas eksperimen</td><td>Random seed, versi dependensi, dan konfigurasi training dicatat.</td><td>Ditetapkan</td></tr>
+<tr><td>Kemampuan berjalan lokal</td><td>Baseline TF-IDF + Logistic Regression dapat dijalankan pada perangkat pengembangan yang tersedia.</td><td>Perlu diuji</td></tr>
+</table>
+</div>
+<div class="callout need-validation"><span class="tag tag-validate">PERLU VALIDASI</span> Target angka waktu respons, throughput, dan kebutuhan memori belum ditetapkan karena belum ada pengujian pada model dan dataset aktual.</div>
+</section>
+<section class="chapter" id="bab12">
+<h2>12. User Flow</h2>
+<h3>12.1 Alur Analisis Teks</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 170" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6D28D9"/></marker>
+  </defs>
+  <g font-size="11" fill="#172033">
+  <!-- steps -->
+  <g>
+    <rect x="10" y="60" width="120" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+    <text x="70" y="80" text-anchor="middle">Buka halaman</text>
+    <text x="70" y="95" text-anchor="middle">NalarAman</text>
+  </g>
+  <line x1="130" y1="85" x2="155" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow1)"/>
+  <g>
+    <rect x="155" y="60" width="120" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+    <text x="215" y="80" text-anchor="middle">Input / tempel</text>
+    <text x="215" y="95" text-anchor="middle">teks pesan</text>
+  </g>
+  <line x1="275" y1="85" x2="300" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow1)"/>
+  <g>
+    <rect x="300" y="60" width="110" height="50" rx="10" fill="#FFFBEB" stroke="#D97706"/>
+    <text x="355" y="80" text-anchor="middle">Validasi</text>
+    <text x="355" y="95" text-anchor="middle">input</text>
+  </g>
+  <line x1="410" y1="85" x2="435" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow1)"/>
+  <g>
+    <rect x="435" y="60" width="110" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+    <text x="490" y="80" text-anchor="middle">Tekan tombol</text>
+    <text x="490" y="95" text-anchor="middle">Analisis</text>
+  </g>
+  <line x1="545" y1="85" x2="570" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow1)"/>
+  <g>
+    <rect x="570" y="60" width="130" height="50" rx="10" fill="#EDE9FE" stroke="#6D28D9"/>
+    <text x="635" y="80" text-anchor="middle">Request ke</text>
+    <text x="635" y="95" text-anchor="middle">Backend API</text>
+  </g>
+  <line x1="700" y1="85" x2="725" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow1)"/>
+  <g>
+    <rect x="725" y="60" width="120" height="50" rx="10" fill="#EDE9FE" stroke="#6D28D9"/>
+    <text x="785" y="80" text-anchor="middle">Pipeline analisis</text>
+    <text x="785" y="95" text-anchor="middle">(klasifikasi, pola, risiko, LIME)</text>
+  </g>
+  <line x1="845" y1="85" x2="870" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow1)"/>
+  <g>
+    <rect x="870" y="60" width="100" height="50" rx="10" fill="#DCFCE7" stroke="#15803D"/>
+    <text x="920" y="80" text-anchor="middle">Tampilkan</text>
+    <text x="920" y="95" text-anchor="middle">hasil</text>
+  </g>
+  </g>
+</svg>
+</div>
+
+<h3>12.2 Alur Screenshot (OCR) — Tahap Lanjutan</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 170" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6D28D9"/></marker>
+  </defs>
+  <g font-size="10.5" fill="#172033">
+  <rect x="5" y="60" width="110" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+  <text x="60" y="80" text-anchor="middle">Pilih mode</text><text x="60" y="95" text-anchor="middle">screenshot</text>
+  <line x1="115" y1="85" x2="138" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <rect x="138" y="60" width="110" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+  <text x="193" y="80" text-anchor="middle">Unggah &amp;</text><text x="193" y="95" text-anchor="middle">preview gambar</text>
+  <line x1="248" y1="85" x2="271" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <rect x="271" y="60" width="110" height="50" rx="10" fill="#FFFBEB" stroke="#D97706"/>
+  <text x="326" y="80" text-anchor="middle">Validasi</text><text x="326" y="95" text-anchor="middle">file gambar</text>
+  <line x1="381" y1="85" x2="404" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <rect x="404" y="60" width="110" height="50" rx="10" fill="#EDE9FE" stroke="#6D28D9"/>
+  <text x="459" y="80" text-anchor="middle">OCR</text><text x="459" y="95" text-anchor="middle">(Tesseract)</text>
+  <line x1="514" y1="85" x2="537" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <rect x="537" y="60" width="130" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+  <text x="602" y="80" text-anchor="middle">Edit/koreksi teks</text><text x="602" y="95" text-anchor="middle">hasil ekstraksi</text>
+  <line x1="667" y1="85" x2="690" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <rect x="690" y="60" width="120" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/>
+  <text x="750" y="80" text-anchor="middle">Konfirmasi</text><text x="750" y="95" text-anchor="middle">teks</text>
+  <line x1="810" y1="85" x2="833" y2="85" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <rect x="833" y="60" width="140" height="50" rx="10" fill="#DCFCE7" stroke="#15803D"/>
+  <text x="903" y="80" text-anchor="middle">Pipeline analisis teks</text><text x="903" y="95" text-anchor="middle">(sama dengan 12.1)</text>
+  </g>
+</svg>
+</div>
+<p class="callout">Alur screenshot merupakan fitur tahap lanjutan dan tidak diaktifkan pada rilis MVP.</p>
+
+<h3>12.3 State Antarmuka</h3>
+<div class="table-wrap">
+<table>
+<caption>Definisi State UI</caption>
+<tr><th>State</th><th>Pemicu</th><th>Tampilan</th></tr>
+<tr><td>Initial</td><td>Halaman baru dibuka</td><td>Kolom input kosong, tombol analisis nonaktif</td></tr>
+<tr><td>Input invalid</td><td>Teks kosong/melebihi batas karakter</td><td>Pesan validasi inline, tombol analisis nonaktif</td></tr>
+<tr><td>Loading</td><td>Request terkirim ke backend</td><td>Spinner/skeleton, tombol analisis dinonaktifkan sementara</td></tr>
+<tr><td>Success</td><td>Response 200 dengan hasil lengkap</td><td>Kartu hasil klasifikasi, indikator pola, risiko, LIME (jika ada)</td></tr>
+<tr><td>Error</td><td>Response gagal/timeout</td><td>Pesan error ramah pengguna + opsi coba lagi</td></tr>
+<tr><td>Model unavailable</td><td>Health check model gagal</td><td>Banner status: analisis sementara tidak tersedia</td></tr>
+<tr><td>LIME unavailable</td><td>LIME gagal dihasilkan namun klasifikasi sukses</td><td>Bagian LIME menampilkan status &ldquo;penjelasan tidak tersedia&rdquo;, bagian lain tetap tampil</td></tr>
+<tr><td>OCR processing</td><td>Gambar sedang diproses OCR</td><td>Indikator proses OCR terpisah dari loading analisis teks</td></tr>
+<tr><td>OCR success</td><td>Teks berhasil diekstraksi</td><td>Teks hasil OCR tampil di editor yang dapat diedit</td></tr>
+<tr><td>OCR failed</td><td>OCR tidak menemukan teks terbaca</td><td>Pesan error + opsi input manual</td></tr>
+<tr><td>Image invalid</td><td>Format/ukuran file tidak sesuai</td><td>Pesan validasi file, unggahan ditolak</td></tr>
+<tr><td>Text extraction requires review</td><td>OCR berhasil namun confidence rendah/struktur kompleks</td><td>Peringatan agar pengguna memeriksa ulang sebelum konfirmasi</td></tr>
+</table>
+</div>
+</section>
+<section class="chapter" id="bab13">
+<h2>13. UI/UX dan Design System</h2>
+<h3>13.1 Palet Warna Resmi</h3>
+<div class="table-wrap">
+<table>
+<caption>Design Tokens — Warna</caption>
+<tr><th>Token</th><th>Kode</th><th>Pratinjau</th><th>Penggunaan</th></tr>
+<tr><td>Primary Purple</td><td>#6D28D9</td><td><span class="color-swatch" style="background:#6D28D9"></span></td><td>Tombol utama, tautan aktif, identitas brand</td></tr>
+<tr><td>Accent Purple</td><td>#8B5CF6</td><td><span class="color-swatch" style="background:#8B5CF6"></span></td><td>Sorotan, elemen interaktif, hover state</td></tr>
+<tr><td>Dark Purple</td><td>#2E1065</td><td><span class="color-swatch" style="background:#2E1065"></span></td><td>Judul, aksen terbatas, header</td></tr>
+<tr><td>Lavender Background</td><td>#F5F3FF</td><td><span class="color-swatch" style="background:#F5F3FF"></span></td><td>Latar halaman</td></tr>
+<tr><td>White Surface</td><td>#FFFFFF</td><td><span class="color-swatch" style="background:#FFFFFF"></span></td><td>Kartu, panel konten</td></tr>
+<tr><td>Primary Text</td><td>#172033</td><td><span class="color-swatch" style="background:#172033"></span></td><td>Teks utama</td></tr>
+<tr><td>Secondary Text</td><td>#64748B</td><td><span class="color-swatch" style="background:#64748B"></span></td><td>Teks sekunder, keterangan</td></tr>
+<tr><td>Neutral Border</td><td>#E5E7EB</td><td><span class="color-swatch" style="background:#E5E7EB"></span></td><td>Garis pembatas standar</td></tr>
+<tr><td>Lavender Border</td><td>#DDD6FE</td><td><span class="color-swatch" style="background:#DDD6FE"></span></td><td>Garis pembatas kartu bernuansa ungu</td></tr>
+</table>
+</div>
+
+<h3>13.2 Warna Status Risiko</h3>
+<div class="table-wrap">
+<table>
+<caption>Design Tokens — Status Risiko (selalu disertai label teks/ikon, tidak hanya warna)</caption>
+<tr><th>Status</th><th>Warna Teks</th><th>Warna Latar</th><th>Contoh</th></tr>
+<tr><td>Risiko Rendah</td><td>#15803D</td><td>#DCFCE7</td><td><span class="risk-chip risk-low">● Risiko Rendah</span></td></tr>
+<tr><td>Risiko Sedang</td><td>#B45309</td><td>#FEF3C7</td><td><span class="risk-chip risk-med">▲ Risiko Sedang</span></td></tr>
+<tr><td>Risiko Tinggi</td><td>#B91C1C</td><td>#FEE2E2</td><td><span class="risk-chip risk-high">■ Risiko Tinggi</span></td></tr>
+</table>
+</div>
+
+<h3>13.3 Tipografi, Spacing, Radius, Shadow</h3>
+<div class="table-wrap">
+<table>
+<caption>Design Tokens — Tipografi &amp; Layout</caption>
+<tr><th>Token</th><th>Nilai</th></tr>
+<tr><td>Font keluarga</td><td>Segoe UI / Inter / system-ui sebagai fallback</td></tr>
+<tr><td>Ukuran judul halaman (H1)</td><td>28–32px, bold</td></tr>
+<tr><td>Ukuran judul bagian (H2)</td><td>20–22px, semi-bold</td></tr>
+<tr><td>Ukuran teks isi</td><td>14–16px, regular</td></tr>
+<tr><td>Ukuran teks sekunder</td><td>12–13px</td></tr>
+<tr><td>Spacing dasar</td><td>Skala 4px (4/8/12/16/24/32px)</td></tr>
+<tr><td>Radius kartu</td><td>10–12px</td></tr>
+<tr><td>Radius tombol</td><td>8px</td></tr>
+<tr><td>Shadow kartu</td><td>0 1px 3px rgba(46,16,101,0.06), lembut dan tidak mencolok</td></tr>
+<tr><td>Border standar</td><td>1px solid Neutral Border atau Lavender Border</td></tr>
+</table>
+</div>
+
+<h3>13.4 State Komponen</h3>
+<ul>
+<li><b>Tombol:</b> default (Primary Purple), hover (Accent Purple), disabled (abu-abu netral, opacity 50%), loading (spinner + teks &ldquo;Menganalisis...&rdquo;).</li>
+<li><b>Input:</b> default (border netral), focus (border Accent Purple + ring lembut), error (border merah risiko tinggi + pesan validasi), disabled (latar abu-abu muda).</li>
+<li><b>Kartu hasil:</b> default (border lavender), highlight sesuai warna status risiko pada aksen kiri kartu.</li>
+</ul>
+
+<h3>13.5 Pedoman Umum</h3>
+<ol>
+<li>Light theme dengan latar lavender muda dan kartu putih.</li>
+<li>Primary Purple sebagai warna utama tombol, tautan aktif, dan identitas brand; Accent Purple untuk sorotan; Dark Purple terbatas untuk judul/aksen.</li>
+<li>Layout modern, profesional, bersih, minimalis.</li>
+<li>Keterbacaan dan kemudahan penggunaan diutamakan di atas dekorasi visual.</li>
+<li>Maksimal empat warna identitas utama (Primary Purple, Accent Purple, Dark Purple, Lavender Background), di luar warna netral dan status semantik risiko.</li>
+<li>Pola desain yang sama digunakan untuk alur input teks dan alur unggah screenshot agar konsisten.</li>
+<li><b>Tidak</b> membuat UI yang seolah-olah model AI sudah aktif apabila integrasi belum tersedia — gunakan state &ldquo;model unavailable&rdquo; secara eksplisit, bukan data tiruan yang terlihat nyata.</li>
+</ol>
+</section>
+
+<section class="chapter" id="bab14">
+<h2>14. Arsitektur Sistem</h2>
+<div class="diagram-wrap">
+<svg viewBox="0 0 960 420" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arrow3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6D28D9"/></marker></defs>
+<g font-size="11" fill="#172033">
+
+<!-- Frontend box -->
+<rect x="30" y="20" width="260" height="110" rx="12" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+<text x="160" y="40" text-anchor="middle" font-weight="bold" fill="#2E1065">FRONTEND (React + TS)</text>
+<text x="160" y="60" text-anchor="middle">Input teks / Unggah screenshot</text>
+<text x="160" y="78" text-anchor="middle">Komponen hasil (klasifikasi,</text>
+<text x="160" y="94" text-anchor="middle">pola, risiko, LIME)</text>
+<text x="160" y="112" text-anchor="middle">API client module</text>
+
+<!-- arrow to backend -->
+<line x1="290" y1="75" x2="345" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow3)"/>
+<text x="317" y="68" text-anchor="middle" font-size="9">HTTP/JSON</text>
+
+<!-- Backend box -->
+<rect x="345" y="20" width="260" height="110" rx="12" fill="#EDE9FE" stroke="#6D28D9" stroke-width="1.5"/>
+<text x="475" y="40" text-anchor="middle" font-weight="bold" fill="#2E1065">BACKEND (FastAPI)</text>
+<text x="475" y="60" text-anchor="middle">Router /api/v1/*</text>
+<text x="475" y="78" text-anchor="middle">Schema (Pydantic)</text>
+<text x="475" y="94" text-anchor="middle">Service: preprocessing,</text>
+<text x="475" y="110" text-anchor="middle">orchestration pipeline</text>
+
+<line x1="605" y1="75" x2="660" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow3)"/>
+
+<!-- ML box -->
+<rect x="660" y="20" width="270" height="110" rx="12" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+<text x="795" y="40" text-anchor="middle" font-weight="bold" fill="#2E1065">MODEL ARTEFAK</text>
+<text x="795" y="60" text-anchor="middle">Model loader</text>
+<text x="795" y="78" text-anchor="middle">(IndoBERT / TF-IDF+LR)</text>
+<text x="795" y="94" text-anchor="middle">Checkpoint tersimpan</text>
+<text x="795" y="110" text-anchor="middle">(hasil training terpisah)</text>
+
+<!-- vertical down from backend -->
+<line x1="475" y1="130" x2="475" y2="170" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow3)"/>
+
+<!-- component row -->
+<rect x="60" y="170" width="170" height="60" rx="10" fill="#FFFFFF" stroke="#DDD6FE"/>
+<text x="145" y="195" text-anchor="middle" font-weight="bold">Klasifikasi</text>
+<text x="145" y="212" text-anchor="middle" font-size="9.5">Normal/Scam/Promosi</text>
+
+<rect x="250" y="170" width="170" height="60" rx="10" fill="#FFFFFF" stroke="#DDD6FE"/>
+<text x="335" y="195" text-anchor="middle" font-weight="bold">Deteksi Pola</text>
+<text x="335" y="212" text-anchor="middle" font-size="9.5">Social Engineering</text>
+
+<rect x="440" y="170" width="170" height="60" rx="10" fill="#FFFFFF" stroke="#DDD6FE"/>
+<text x="525" y="195" text-anchor="middle" font-weight="bold">Penilaian Risiko</text>
+<text x="525" y="212" text-anchor="middle" font-size="9.5">Rendah/Sedang/Tinggi</text>
+
+<rect x="630" y="170" width="170" height="60" rx="10" fill="#FFFFFF" stroke="#DDD6FE"/>
+<text x="715" y="195" text-anchor="middle" font-weight="bold">LIME (XAI)</text>
+<text x="715" y="212" text-anchor="middle" font-size="9.5">Penjelasan lokal</text>
+
+<rect x="820" y="170" width="110" height="60" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-dasharray="4"/>
+<text x="875" y="195" text-anchor="middle" font-weight="bold" font-size="10">OCR</text>
+<text x="875" y="212" text-anchor="middle" font-size="9">(Tahap lanjutan)</text>
+
+<!-- connecting lines from backend down to each -->
+<line x1="150" y1="170" x2="420" y2="135" stroke="#C4B5FD" stroke-width="1.3"/>
+<line x1="335" y1="170" x2="460" y2="135" stroke="#C4B5FD" stroke-width="1.3"/>
+<line x1="525" y1="170" x2="490" y2="135" stroke="#C4B5FD" stroke-width="1.3"/>
+<line x1="715" y1="170" x2="540" y2="135" stroke="#C4B5FD" stroke-width="1.3"/>
+<line x1="875" y1="170" x2="560" y2="135" stroke="#C4B5FD" stroke-width="1.3" stroke-dasharray="4"/>
+
+<!-- training pipeline separated -->
+<rect x="60" y="270" width="800" height="110" rx="12" fill="#FBFAFF" stroke="#E5E7EB" stroke-dasharray="5"/>
+<text x="460" y="290" text-anchor="middle" font-weight="bold" fill="#64748B">PIPELINE TRAINING &amp; EVALUASI (terpisah dari inference, dijalankan offline)</text>
+<text x="460" y="312" text-anchor="middle" font-size="10">Dataset mentah → Validasi &amp; Anotasi → Preprocessing → Split Train/Val/Test →</text>
+<text x="460" y="330" text-anchor="middle" font-size="10">Training Baseline (TF-IDF+LR) &amp; Fine-tuning IndoBERT → Evaluasi → Artefak Model Tersimpan</text>
+<line x1="475" y1="270" x2="475" y2="130" stroke="#C4B5FD" stroke-width="1.3" stroke-dasharray="6"/>
+<text x="500" y="255" text-anchor="middle" font-size="9" fill="#64748B">Artefak dimuat saat startup backend</text>
+
+</g>
+</svg>
+</div>
+
+<h3>14.1 Prinsip Arsitektur</h3>
+<ol>
+<li>Frontend tidak melakukan training model; seluruh komputasi ML dilakukan di backend/pipeline terpisah.</li>
+<li>Training dan evaluasi model terpisah sepenuhnya dari proses inference runtime.</li>
+<li>Backend memuat artefak model yang benar-benar telah dilatih — tidak ada simulasi hasil model pada kode backend.</li>
+<li>Frontend berkomunikasi dengan backend hanya melalui API terdefinisi (lihat Bab 17).</li>
+<li>Komponen klasifikasi, deteksi pola, penilaian risiko, LIME, dan OCR dipisahkan secara logis sebagai modul/service independen.</li>
+<li>OCR menghasilkan teks yang kemudian diproses oleh pipeline analisis teks yang sama — tidak ada pipeline analisis terpisah untuk screenshot.</li>
+<li>Tidak diperlukan database untuk MVP karena seluruh pemrosesan dapat dilakukan tanpa penyimpanan data pengguna permanen.</li>
+<li>Semua keputusan arsitektur yang belum dipastikan diberi label <span class="tag tag-validate">[PERLU VALIDASI]</span>.</li>
+</ol>
+<div class="callout need-validation"><span class="tag tag-validate">PERLU VALIDASI</span> Pilihan deployment (single server vs. terpisah untuk ML serving), kebutuhan message queue untuk antrean inference, dan strategi caching model belum ditentukan — akan dievaluasi pada Tahap 2–3 roadmap.</div>
+</section>
+<section class="chapter" id="bab15">
+<h2>15. Spesifikasi Frontend</h2>
+<h3>15.1 Tanggung Jawab Frontend</h3>
+<ul>
+<li>Menyediakan antarmuka input teks dan (tahap lanjutan) unggah screenshot.</li>
+<li>Melakukan validasi input dasar sebelum request dikirim.</li>
+<li>Mengelola state UI (initial, loading, success, error, dsb — lihat Bab 12.3).</li>
+<li>Menampilkan hasil analisis secara terstruktur dan jujur terhadap ketersediaan komponen (tidak menyamarkan data tiruan sebagai hasil nyata).</li>
+<li>Mengirim dan menerima data dari backend melalui modul API client yang terpisah dari komponen UI.</li>
+</ul>
+
+<h3>15.2 Struktur Halaman</h3>
+<div class="grid-2">
+<div class="step-box"><b>Halaman Utama — Mode Teks</b><br>Header brand, deskripsi singkat, kolom input teks, tombol analisis, area hasil (klasifikasi, indikator pola, risiko, LIME), footer peringatan keterbatasan.</div>
+<div class="step-box"><b>Halaman Utama — Mode Screenshot (Lanjutan)</b><br>Toggle mode, area unggah/drag-drop, preview gambar, editor teks hasil OCR, tombol konfirmasi &amp; analisis, area hasil yang sama dengan mode teks.</div>
+</div>
+
+<h3>15.3 Daftar Komponen</h3>
+<div class="table-wrap">
+<table>
+<caption>Komponen Frontend Utama</caption>
+<tr><th>Komponen</th><th>Tanggung Jawab</th></tr>
+<tr><td><code class="inline">TextInputPanel</code></td><td>Kolom input teks, penghitung karakter, validasi kosong/batas panjang</td></tr>
+<tr><td><code class="inline">AnalyzeButton</code></td><td>Memicu request analisis; state default/disabled/loading</td></tr>
+<tr><td><code class="inline">LoadingIndicator</code></td><td>Menampilkan status proses analisis sedang berjalan</td></tr>
+<tr><td><code class="inline">ErrorBanner</code></td><td>Menampilkan pesan error/ketidaktersediaan backend atau model</td></tr>
+<tr><td><code class="inline">ClassificationCard</code></td><td>Menampilkan label kelas (Normal/Scam/Promosi) dan confidence jika tersedia</td></tr>
+<tr><td><code class="inline">PatternIndicatorList</code></td><td>Daftar indikator pola social engineering yang terdeteksi beserta dasar deteksinya</td></tr>
+<tr><td><code class="inline">RiskAssessmentBadge</code></td><td>Menampilkan tingkat risiko dengan warna + label teks/ikon dan dasar penilaian</td></tr>
+<tr><td><code class="inline">LimeExplanationPanel</code></td><td>Visualisasi kontribusi kata/frasa terhadap prediksi; status &ldquo;tidak tersedia&rdquo; jika gagal</td></tr>
+<tr><td><code class="inline">LimitationNotice</code></td><td>Peringatan tetap mengenai keterbatasan hasil (selalu tampil di setiap hasil sukses)</td></tr>
+<tr><td><code class="inline">ImageUploadZone</code> <span class="tag tag-future">Lanjutan</span></td><td>Drag-drop/unggah gambar, validasi format &amp; ukuran, preview</td></tr>
+<tr><td><code class="inline">OcrTextEditor</code> <span class="tag tag-future">Lanjutan</span></td><td>Kolom teks dapat diedit berisi hasil OCR, tombol konfirmasi</td></tr>
+</table>
+</div>
+
+<h3>15.4 Modul API Client</h3>
+<p>Modul <code class="inline">apiClient</code> terpisah dari komponen UI, bertanggung jawab atas pemanggilan endpoint, penanganan timeout, dan pemetaan error HTTP ke pesan yang dapat ditampilkan. Contoh struktur (ilustratif, belum merupakan implementasi final):</p>
+<pre>// src/api/analyzeApi.ts
+export async function analyzeText(text: string): Promise&lt;AnalyzeResponse&gt; {
+  const res = await fetch(`${API_BASE_URL}/api/v1/analyze`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text }),
+  });
+  if (!res.ok) throw new ApiError(res.status, await res.text());
+  return res.json();
+}</pre>
+
+<h3>15.5 Validasi Input</h3>
+<ul>
+<li>Teks tidak boleh kosong atau hanya berisi spasi.</li>
+<li>Batas panjang maksimum teks <span class="tag tag-validate">[PERLU VALIDASI]</span> — ditentukan berdasarkan batas yang didukung backend dan model (lihat Bab 26).</li>
+<li>Validasi dilakukan di sisi klien sebagai pengalaman cepat, namun backend tetap melakukan validasi ulang (tidak mempercayai validasi klien sepenuhnya).</li>
+</ul>
+
+<h3>15.6 Pengelolaan State, Responsivitas, Aksesibilitas</h3>
+<p>State UI dikelola menggunakan state lokal komponen/hook (mis. <code class="inline">useState</code>/<code class="inline">useReducer</code>) karena kebutuhan MVP tidak memerlukan state management global yang kompleks. Layout menggunakan flexbox/grid responsif dengan breakpoint mobile, tablet, dan desktop. Elemen interaktif memiliki label aksesibel, kontras warna memadai sesuai design token Bab 13, dan dapat dinavigasi menggunakan keyboard.</p>
+
+<h3>15.7 Struktur Folder Frontend (Ringkas)</h3>
+<pre>frontend/
+├── src/
+│   ├── components/        # Komponen UI (lihat 15.3)
+│   ├── pages/              # Halaman utama (mode teks & screenshot)
+│   ├── api/                 # Modul API client
+│   ├── types/               # Tipe TypeScript (request/response)
+│   ├── hooks/               # Custom hooks (state analisis, upload, dsb.)
+│   ├── styles/               # Design tokens & styling global
+│   └── utils/                 # Validasi, formatter
+├── public/
+├── .env.example
+├── package.json
+└── vite.config.ts</pre>
+
+<h3>15.8 Konfigurasi Environment &amp; Cara Menjalankan</h3>
+<pre># .env.example
+VITE_API_BASE_URL=http://localhost:8000
+
+# Menjalankan frontend (pengembangan)
+npm install
+npm run dev</pre>
+</section>
+
+<section class="chapter" id="bab16">
+<h2>16. Spesifikasi Backend</h2>
+<h3>16.1 Struktur Aplikasi FastAPI</h3>
+<pre>backend/
+├── app/
+│   ├── main.py                 # Entry point FastAPI
+│   ├── routers/
+│   │   ├── health.py           # GET /api/v1/health
+│   │   ├── analyze.py          # POST /api/v1/analyze
+│   │   └── analyze_image.py    # POST /api/v1/analyze-image (lanjutan)
+│   ├── schemas/                # Pydantic request/response models
+│   ├── services/
+│   │   ├── preprocessing.py
+│   │   ├── classification_service.py
+│   │   ├── pattern_detection_service.py
+│   │   ├── risk_assessment_service.py
+│   │   ├── explainability_service.py   # LIME
+│   │   └── ocr_service.py              # lanjutan
+│   ├── ml/
+│   │   ├── model_loader.py
+│   │   └── artifacts/          # (tidak masuk VCS jika besar/sensitif)
+│   ├── core/                   # Konfigurasi, logging, exception handler
+│   └── utils/
+├── tests/
+├── .env.example
+├── requirements.txt
+└── README.md</pre>
+
+<h3>16.2 Router dan Tanggung Jawab</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Router</th><th>Endpoint</th><th>Tanggung Jawab</th></tr>
+<tr><td>health.py</td><td>GET /api/v1/health</td><td>Status backend aktif + status kesiapan model/komponen</td></tr>
+<tr><td>analyze.py</td><td>POST /api/v1/analyze</td><td>Orkestrasi pipeline analisis teks</td></tr>
+<tr><td>analyze_image.py <span class="tag tag-future">Lanjutan</span></td><td>POST /api/v1/analyze-image</td><td>Validasi gambar, OCR, lalu memanggil pipeline analisis teks yang sama</td></tr>
+</table>
+</div>
+
+<h3>16.3 Service Analisis</h3>
+<ul>
+<li><b>preprocessing.py</b> — normalisasi teks (lowercasing, pembersihan simbol berlebih, dsb.) konsisten antara training dan inference.</li>
+<li><b>classification_service.py</b> — memanggil model terload untuk menghasilkan label dan confidence (jika tersedia dan valid).</li>
+<li><b>pattern_detection_service.py</b> — menjalankan deteksi indikator pola (rule-based atau model, lihat Bab 21).</li>
+<li><b>risk_assessment_service.py</b> — menggabungkan output klasifikasi dan indikator pola menjadi tingkat risiko berdasarkan aturan terdokumentasi (lihat Bab 23).</li>
+<li><b>explainability_service.py</b> — menjalankan LIME terhadap model klasifikasi, menangani kegagalan secara eksplisit (lihat Bab 22).</li>
+<li><b>ocr_service.py</b> <span class="tag tag-future">Lanjutan</span> — menjalankan Tesseract terhadap gambar yang divalidasi, mengembalikan teks dan indikator kualitas ekstraksi.</li>
+</ul>
+
+<h3>16.4 Model Loader</h3>
+<p>Modul <code class="inline">model_loader.py</code> bertanggung jawab memuat artefak model (baseline dan/atau IndoBERT) saat startup aplikasi, memvalidasi keberadaan file artefak, dan mengekspos status kesiapan ke endpoint <code class="inline">/health</code>. Kegagalan pemuatan model tidak boleh menghentikan backend sepenuhnya — endpoint <code class="inline">/analyze</code> harus mengembalikan status <i>model unavailable</i> yang jelas, bukan error generik atau hasil tiruan.</p>
+
+<h3>16.5 Validasi, Error Handling, Logging</h3>
+<ul>
+<li>Seluruh request divalidasi menggunakan schema Pydantic (tipe data, panjang teks, format file).</li>
+<li>Error dipetakan ke kode HTTP yang sesuai dengan format error konsisten (lihat Bab 17 dan 25).</li>
+<li>Logging mencatat metadata request (timestamp, endpoint, status, durasi) <b>tanpa</b> mencatat isi pesan pengguna secara default (lihat Bab 26).</li>
+</ul>
+
+<h3>16.6 Konfigurasi Environment &amp; Cara Menjalankan</h3>
+<pre># .env.example
+MODEL_PATH=./app/ml/artifacts/indobert_v1
+BASELINE_MODEL_PATH=./app/ml/artifacts/tfidf_lr_v1
+ENABLE_LIME=true
+MAX_TEXT_LENGTH=2000
+CORS_ORIGINS=http://localhost:5173
+
+# Menjalankan backend (pengembangan)
+python -m venv venv
+venv\Scripts\activate        # Windows
+pip install -r requirements.txt --break-system-packages
+uvicorn app.main:app --reload --port 8000</pre>
+</section>
+<section class="chapter" id="bab17">
+<h2>17. Spesifikasi API</h2>
+
+<h3>17.1 GET /api/v1/health</h3>
+<p>Memeriksa status layanan backend dan kesiapan komponen terkait. Membedakan status backend aktif dengan status model siap digunakan.</p>
+<p><span class="tag tag-illustrative">Ilustrasi Skema</span> — bukan hasil nyata:</p>
+<pre>{
+  "status": "ok",
+  "backend_active": true,
+  "components": {
+    "classification_model": "ready",
+    "baseline_model": "ready",
+    "lime_explainer": "ready",
+    "ocr_engine": "not_configured"
+  },
+  "timestamp": "2026-10-11T09:00:00Z"
+}</pre>
+
+<h3>17.2 POST /api/v1/analyze</h3>
+<p><b>Request:</b></p>
+<pre>{
+  "text": "Isi pesan yang ingin dianalisis"
+}</pre>
+<p><b>Response (ilustrasi skema, bukan hasil prediksi model nyata):</b></p>
+<pre>{
+  "request_status": "success",
+  "classification": {
+    "label": "Scam",
+    "confidence": 0.00
+  },
+  "social_engineering_indicators": [
+    {
+      "indicator": "urgensi_waktu",
+      "description": "Pesan mengandung tekanan waktu yang mendesak",
+      "basis": "rule-based"
+    }
+  ],
+  "risk_assessment": {
+    "level": "tinggi",
+    "basis": "Kombinasi indikator pola dan label klasifikasi sesuai aturan terdokumentasi (Bab 23)"
+  },
+  "explanation": {
+    "method": "LIME",
+    "available": false,
+    "reason": "Komponen LIME belum terintegrasi pada build ini"
+  },
+  "warnings": [
+    "Hasil ini bukan jaminan mutlak. Lakukan verifikasi melalui saluran resmi."
+  ]
+}</pre>
+<div class="callout warn"><span class="tag tag-illustrative">PENTING</span> Nilai <code class="inline">confidence</code>, label, dan indikator pada contoh di atas adalah <b>ilustrasi struktur data semata</b>, bukan hasil prediksi dari model yang telah dilatih. Model belum dilatih dan dievaluasi pada tahap penyusunan dokumen ini.</div>
+
+<h3>17.3 POST /api/v1/analyze-image <span class="tag tag-future">Tahap Lanjutan — Belum Tersedia</span></h3>
+<p>Endpoint ini <b>direncanakan</b> untuk tahap OCR lanjutan dan <b>belum diimplementasikan</b>. Kontrak berikut adalah usulan awal yang dapat berubah selama implementasi.</p>
+<p><b>Request (usulan, multipart/form-data):</b></p>
+<pre>POST /api/v1/analyze-image
+Content-Type: multipart/form-data
+
+file: &lt;binary image file&gt;   # jpg/png, maks ukuran sesuai Bab 26</pre>
+<p><b>Response tahap OCR (usulan, ilustrasi skema):</b></p>
+<pre>{
+  "request_status": "ocr_extracted",
+  "ocr_result": {
+    "extracted_text": "contoh teks hasil OCR",
+    "confidence": 0.00,
+    "requires_review": true
+  },
+  "warnings": [
+    "Hasil OCR dapat tidak akurat. Periksa dan perbaiki teks sebelum melanjutkan analisis."
+  ]
+}</pre>
+<p>Setelah teks dikonfirmasi pengguna, teks tersebut dikirim ke <code class="inline">/api/v1/analyze</code> menggunakan kontrak yang sama dengan 17.2, sehingga pipeline analisis tidak duplikat.</p>
+<p><b>Validasi file yang diusulkan:</b> format (jpg/png), ukuran maksimum, dimensi minimum agar OCR layak dijalankan, serta penanganan file rusak/corrupt.</p>
+
+<h3>17.4 Format Error Umum</h3>
+<pre>{
+  "request_status": "error",
+  "error_code": "MODEL_UNAVAILABLE",
+  "message": "Model klasifikasi belum siap. Silakan coba lagi nanti.",
+  "detail": null
+}</pre>
+<div class="table-wrap">
+<table>
+<caption>Kode Error yang Diusulkan</caption>
+<tr><th>Kode</th><th>HTTP Status</th><th>Arti</th></tr>
+<tr><td>INVALID_INPUT</td><td>400</td><td>Teks kosong, melebihi batas panjang, atau format request tidak valid</td></tr>
+<tr><td>MODEL_UNAVAILABLE</td><td>503</td><td>Model klasifikasi gagal dimuat/tidak siap</td></tr>
+<tr><td>LIME_FAILED</td><td>200 (sebagian)</td><td>Klasifikasi berhasil namun LIME gagal — hasil lain tetap dikembalikan</td></tr>
+<tr><td>IMAGE_INVALID</td><td>400</td><td>Format/ukuran gambar tidak sesuai (endpoint lanjutan)</td></tr>
+<tr><td>OCR_FAILED</td><td>422</td><td>OCR tidak menemukan teks terbaca (endpoint lanjutan)</td></tr>
+<tr><td>INTERNAL_ERROR</td><td>500</td><td>Kegagalan tak terduga; detail internal tidak dibocorkan ke klien</td></tr>
+</table>
+</div>
+</section>
+
+<section class="chapter" id="bab18">
+<h2>18. Dataset dan Anotasi</h2>
+<div class="callout need-validation"><span class="tag tag-validate">PERLU VALIDASI</span> Dataset <b>belum tersedia</b> untuk pelaksanaan training pada saat penyusunan dokumen ini. Angka awal yang pernah direncanakan (1.143 pesan: Normal 569, Scam 335, Promosi 239) <b>belum boleh dianggap terverifikasi</b> sebelum file dataset asli diperoleh dan diperiksa.</div>
+
+<h3>18.1 Proses Persiapan Dataset</h3>
+<ol>
+<li>Mendapatkan dataset dari sumber yang dapat dipertanggungjawabkan.</li>
+<li>Memeriksa izin penggunaan dan ketentuan distribusi dataset.</li>
+<li>Memvalidasi jumlah sampel dan label terhadap klaim awal.</li>
+<li>Memeriksa teks kosong, duplikasi, format, dan kualitas data.</li>
+<li>Memeriksa kemungkinan <i>data leakage</i> (mis. duplikasi antar split).</li>
+<li>Menetapkan pembagian train/validation/test (proporsi diusulkan 70/15/15, <span class="tag tag-validate">PERLU VALIDASI</span> terhadap ukuran dataset aktual).</li>
+<li>Mencatat random seed dan konfigurasi eksperimen untuk reproduksibilitas.</li>
+<li>Memeriksa distribusi kelas dan potensi ketidakseimbangan data.</li>
+<li>Menyimpan dokumentasi preprocessing (versi, langkah, parameter).</li>
+<li>Mendokumentasikan keterbatasan dataset terhadap representasi pesan digital nyata (sumber, periode, bias potensial).</li>
+</ol>
+
+<h3>18.2 Anotasi Pola Social Engineering</h3>
+<p>Dataset klasifikasi awal (jika tersedia) <b>tidak diasumsikan</b> sudah memiliki label pola <i>social engineering</i>. Kandidat pola yang perlu dikaji dan dianotasi tambahan:</p>
+<div class="table-wrap">
+<table>
+<caption>Kandidat Indikator Pola Social Engineering</caption>
+<tr><th>Indikator</th><th>Deskripsi Singkat</th></tr>
+<tr><td>Urgensi/tekanan waktu</td><td>Pesan mendesak tindakan segera (&ldquo;segera&rdquo;, &ldquo;dalam 1 jam&rdquo;)</td></tr>
+<tr><td>Ancaman/konsekuensi negatif</td><td>Mengancam pemblokiran akun, denda, atau kerugian jika tidak bertindak</td></tr>
+<tr><td>Iming-iming hadiah/keuntungan</td><td>Menawarkan hadiah, cashback, atau keuntungan tidak wajar</td></tr>
+<tr><td>Penyamaran identitas/pihak tepercaya</td><td>Mengaku sebagai bank, instansi resmi, atau kerabat</td></tr>
+<tr><td>Permintaan informasi sensitif</td><td>Meminta OTP, PIN, password, atau data pribadi</td></tr>
+<tr><td>Tautan/situs palsu</td><td>Menyertakan tautan mencurigakan atau domain menyerupai situs resmi</td></tr>
+<tr><td>Penipuan transaksi jual beli</td><td>Pola modus penipuan pada transaksi daring (barang tidak dikirim, dsb.)</td></tr>
+<tr><td>Krisis keluarga/darurat palsu</td><td>Mengaku anggota keluarga dalam keadaan darurat membutuhkan dana</td></tr>
+</table>
+</div>
+<p>PRD mensyaratkan proses anotasi tambahan mencakup: pedoman label tertulis, contoh positif dan negatif untuk setiap indikator, mekanisme penanganan kasus ambigu (mis. anotasi ganda/<i>adjudication</i>), dan pemeriksaan kualitas anotasi (mis. <i>inter-annotator agreement</i>) <span class="tag tag-validate">[PERLU VALIDASI]</span> metrik dan ambang kesepakatan yang akan digunakan.</p>
+</section>
+
+<section class="chapter" id="bab19">
+<h2>19. Pipeline AI/ML</h2>
+<div class="diagram-wrap">
+<svg viewBox="0 0 960 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arrow4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6D28D9"/></marker></defs>
+<g font-size="10.5" fill="#172033">
+<rect x="10" y="50" width="120" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/><text x="70" y="78" text-anchor="middle">Dataset Mentah</text>
+<line x1="130" y1="75" x2="153" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow4)"/>
+<rect x="153" y="50" width="120" height="50" rx="10" fill="#FFFBEB" stroke="#D97706"/><text x="213" y="78" text-anchor="middle">Validasi &amp; Anotasi</text>
+<line x1="273" y1="75" x2="296" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow4)"/>
+<rect x="296" y="50" width="120" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/><text x="356" y="78" text-anchor="middle">Preprocessing</text>
+<line x1="416" y1="75" x2="439" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow4)"/>
+<rect x="439" y="50" width="120" height="50" rx="10" fill="#F5F3FF" stroke="#8B5CF6"/><text x="499" y="78" text-anchor="middle">Split Train/Val/Test</text>
+<line x1="559" y1="75" x2="582" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow4)"/>
+<rect x="582" y="50" width="150" height="50" rx="10" fill="#EDE9FE" stroke="#6D28D9"/><text x="657" y="70" text-anchor="middle">Training</text><text x="657" y="86" text-anchor="middle" font-size="9">Baseline + IndoBERT</text>
+<line x1="732" y1="75" x2="755" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow4)"/>
+<rect x="755" y="50" width="100" height="50" rx="10" fill="#FFFBEB" stroke="#D97706"/><text x="805" y="78" text-anchor="middle">Evaluasi</text>
+<line x1="855" y1="75" x2="878" y2="75" stroke="#6D28D9" stroke-width="2" marker-end="url(#arrow4)"/>
+<rect x="878" y="50" width="75" height="50" rx="10" fill="#DCFCE7" stroke="#15803D"/><text x="915" y="78" text-anchor="middle" font-size="9.5">Artefak Model</text>
+</g>
+</svg>
+</div>
+<h3>19.1 Prinsip Pipeline</h3>
+<ul>
+<li>Preprocessing training dan inference menggunakan kode/modul yang sama agar tidak terjadi <i>training-serving skew</i>.</li>
+<li>Setiap eksperimen dicatat: versi dataset, parameter, random seed, metrik hasil.</li>
+<li>Artefak model (bobot, tokenizer, konfigurasi) disimpan dengan versi yang jelas sebelum dimuat backend.</li>
+<li>Pipeline training berjalan offline/terpisah dari server inference produksi.</li>
+</ul>
+</section>
+<section class="chapter" id="bab20">
+<h2>20. Klasifikasi Pesan</h2>
+<h3>20.1 Baseline — TF-IDF + Logistic Regression</h3>
+<p>Tujuan baseline:</p>
+<ul>
+<li>Menyediakan pembanding awal yang ringan secara komputasi.</li>
+<li>Menguji kelayakan pipeline data dari ujung ke ujung sebelum investasi pada model yang lebih kompleks.</li>
+<li>Memberikan baseline yang dapat dijalankan pada perangkat lokal tanpa GPU (lihat Bab 18/Bab 28 perangkat pengembangan).</li>
+<li>Membantu menilai manfaat IndoBERT secara terukur dibandingkan pendekatan sederhana.</li>
+</ul>
+
+<h3>20.2 Model Utama — IndoBERT (Fine-tuned)</h3>
+<p>IndoBERT diusulkan sebagai kandidat model utama untuk klasifikasi tiga kelas (Normal/Scam/Promosi) melalui proses <i>fine-tuning</i> pada dataset berlabel yang telah diverifikasi (Bab 18). PRD ini memuat rencana cakupan berikut, yang seluruhnya masih berstatus rencana sampai eksperimen dilakukan:</p>
+<div class="table-wrap">
+<table>
+<caption>Cakupan Perencanaan Model Utama</caption>
+<tr><th>Aspek</th><th>Rencana</th></tr>
+<tr><td>Pemilihan model pretrained</td><td>Varian IndoBERT yang tersedia publik <span class="tag tag-validate">[PERLU VALIDASI]</span> versi spesifik</td></tr>
+<tr><td>Tokenisasi</td><td>WordPiece tokenizer bawaan IndoBERT, konsisten antara training dan inference</td></tr>
+<tr><td>Panjang input</td><td>Maksimum token <span class="tag tag-validate">[PERLU VALIDASI]</span> berdasarkan distribusi panjang pesan dataset aktual</td></tr>
+<tr><td>Konfigurasi training</td><td>Learning rate, batch size, epoch <span class="tag tag-validate">[PERLU VALIDASI]</span> disesuaikan kapasitas perangkat (Bab 28)</td></tr>
+<tr><td>Checkpoint</td><td>Disimpan per epoch/evaluasi terbaik, checkpoint tidak perlu disimpan semua untuk menghemat ruang disk</td></tr>
+<tr><td>Evaluasi</td><td>Accuracy, precision, recall, F1-score per kelas dan makro (Bab 27/28)</td></tr>
+<tr><td>Penyimpanan artefak</td><td>Bobot model, tokenizer, label mapping, versi disimpan terstruktur</td></tr>
+<tr><td>Loading pada backend</td><td>Dimuat saat startup melalui <code class="inline">model_loader.py</code> (Bab 16.4)</td></tr>
+<tr><td>Penanganan kegagalan pemuatan</td><td>Backend tetap berjalan, endpoint analisis mengembalikan status <code class="inline">MODEL_UNAVAILABLE</code></td></tr>
+</table>
+</div>
+<div class="callout danger">Dokumen ini <b>tidak</b> menyatakan bahwa IndoBERT pasti lebih baik daripada baseline sebelum eksperimen dilakukan, dan <b>tidak</b> mengarang nilai accuracy, precision, recall, F1-score, probabilitas, maupun waktu inference. Seluruh angka performa hanya boleh diisi setelah evaluasi aktual (lihat Bab 28, kolom &ldquo;Hasil Aktual&rdquo;).</div>
+</section>
+
+<section class="chapter" id="bab21">
+<h2>21. Deteksi Pola Social Engineering</h2>
+<p>Deteksi pola dipisahkan secara logis dari klasifikasi kelas pesan — keduanya adalah komponen keluaran yang berbeda meskipun dapat saling memengaruhi hasil penilaian risiko (Bab 23).</p>
+
+<h3>21.1 Evaluasi Dua Pilihan Pendekatan</h3>
+<div class="grid-2">
+<div class="card">
+<h4>Opsi 1 — Rule-based Detection</h4>
+<p><b>Kelebihan:</b> tidak memerlukan anotasi multi-label berskala besar, mudah ditinjau dan dijelaskan, cepat diimplementasikan untuk MVP.</p>
+<p><b>Kekurangan:</b> rentan terhadap variasi bahasa/ejaan, berpotensi tinggi false positive/negative pada kalimat yang kompleks.</p>
+</div>
+<div class="card">
+<h4>Opsi 2 — Multi-label Classification</h4>
+<p><b>Kelebihan:</b> berpotensi lebih adaptif terhadap variasi bahasa jika data memadai.</p>
+<p><b>Kekurangan:</b> memerlukan anotasi tambahan berskala besar per indikator, kompleksitas evaluasi lebih tinggi, risiko data tidak memadai pada tahap awal.</p>
+</div>
+</div>
+
+<h3>21.2 Rekomendasi Pendekatan MVP</h3>
+<p>Mengingat keterbatasan anotasi pada tahap awal (Bab 18.2) dan kebutuhan MVP yang dapat ditinjau secara transparan, pendekatan <b>rule-based detection</b> direkomendasikan sebagai pendekatan MVP yang paling realistis, dengan multi-label classification dicatat sebagai opsi pengembangan lanjutan apabila dataset dan anotasi memadai <span class="tag tag-validate">[PERLU VALIDASI]</span> keputusan akhir akan ditinjau ulang setelah dataset tersedia.</p>
+
+<h3>21.3 Spesifikasi Rule-based Detection</h3>
+<ul>
+<li><b>Daftar indikator:</b> mengacu pada delapan kandidat pola di Bab 18.2 (urgensi, ancaman, iming-iming, penyamaran identitas, permintaan info sensitif, tautan palsu, penipuan transaksi, krisis keluarga palsu).</li>
+<li><b>Aturan pencocokan:</b> kombinasi kata kunci/frasa, pola regex sederhana, dan heuristik konteks dasar (mis. kedekatan kata kunci ancaman dengan kata kunci waktu) — daftar lengkap aturan <span class="tag tag-validate">[PERLU VALIDASI]</span> disusun bersama pakar domain/linguistik.</li>
+<li><b>Penanganan variasi bahasa:</b> normalisasi ejaan informal, singkatan umum, dan variasi bahasa daerah/campuran <span class="tag tag-validate">[PERLU VALIDASI]</span> cakupan kamus normalisasi.</li>
+<li><b>Potensi false positive/negative:</b> kata kunci promosi sah dapat terdeteksi sebagai iming-iming; pesan scam yang halus tanpa kata kunci eksplisit dapat lolos deteksi.</li>
+<li><b>Batasan konteks:</b> aturan berbasis kata kunci tidak sepenuhnya memahami konteks kalimat secara menyeluruh.</li>
+<li><b>Rencana pengujian:</b> pengujian terhadap himpunan kasus uji mencakup kasus positif, negatif, dan ambigu (lihat Bab 27).</li>
+</ul>
+<div class="callout warn">Kemunculan satu kata kunci tertentu <b>tidak dianggap sebagai bukti pasti</b> bahwa pesan merupakan penipuan. Indikator pola selalu disajikan sebagai sinyal pendukung, bukan vonis final.</div>
+</section>
+<section class="chapter" id="bab22">
+<h2>22. Explainable AI dengan LIME</h2>
+<h3>22.1 Peran LIME</h3>
+<p>LIME (Local Interpretable Model-agnostic Explanations) digunakan untuk menerangkan kontribusi bagian teks (kata/frasa) terhadap prediksi model klasifikasi <b>pada satu input tertentu</b> (penjelasan lokal), bukan penjelasan umum/global atas seluruh perilaku model.</p>
+
+<h3>22.2 Integrasi pada Pipeline Inference</h3>
+<ol>
+<li>Setelah model klasifikasi menghasilkan prediksi untuk suatu teks, <code class="inline">explainability_service.py</code> memanggil LIME dengan model dan teks input yang sama.</li>
+<li>LIME menghasilkan daftar kata/frasa beserta bobot kontribusi (positif mendukung kelas prediksi, negatif menurunkan skor).</li>
+<li>Hasil dipetakan ke format response yang dapat divisualisasikan frontend (lihat 17.2).</li>
+<li>Jika LIME gagal dijalankan (timeout, error internal, model tidak kompatibel), status <code class="inline">available: false</code> dikembalikan beserta alasan, dan bagian lain dari hasil analisis tetap ditampilkan.</li>
+</ol>
+
+<h3>22.3 Bentuk Data Input/Output (Ilustratif)</h3>
+<pre>// Input ke LIME: teks pesan + fungsi prediksi model
+// Output (ilustrasi struktur, bukan hasil aktual):
+{
+  "method": "LIME",
+  "available": true,
+  "contributions": [
+    { "token": "contoh_kata", "weight": 0.00, "direction": "mendukung_scam" },
+    { "token": "contoh_kata_lain", "weight": 0.00, "direction": "menurunkan_skor_scam" }
+  ],
+  "computation_time_ms": null
+}</pre>
+
+<h3>22.4 Pertimbangan dan Batasan</h3>
+<ul>
+<li><b>Waktu komputasi:</b> LIME memerlukan beberapa kali evaluasi model per penjelasan sehingga berpotensi memperlambat response; perlu diukur pada model aktual <span class="tag tag-validate">[PERLU VALIDASI]</span>.</li>
+<li><b>Batasan interpretasi:</b> LIME menjelaskan perilaku model secara lokal berdasarkan aproksimasi linier di sekitar input — <b>bukan bukti kausal yang pasti</b> tentang mengapa pesan tersebut benar-benar penipuan.</li>
+<li><b>Perbedaan dengan indikator pola:</b> indikator pola (Bab 21) berasal dari aturan/komponen deteksi terpisah yang terdokumentasi; LIME menjelaskan model klasifikasi. Keduanya ditampilkan terpisah dan tidak boleh digabung seolah satu sumber kebenaran.</li>
+<li><b>Tidak ada nilai kontribusi fiktif:</b> jika LIME belum tersedia atau gagal dijalankan, sistem menampilkan status yang jelas, bukan penjelasan palsu yang terlihat seperti berasal dari model aktual.</li>
+</ul>
+</section>
+
+<section class="chapter" id="bab23">
+<h2>23. Penilaian Risiko</h2>
+<h3>23.1 Pembedaan Komponen</h3>
+<p>Sistem secara eksplisit membedakan lima hal berikut agar pengguna tidak menyamakannya:</p>
+<ol>
+<li>Label klasifikasi model (Normal/Scam/Promosi).</li>
+<li>Indikator pola social engineering (hasil deteksi terpisah).</li>
+<li>Tingkat risiko berdasarkan aturan (rendah/sedang/tinggi).</li>
+<li>Probabilitas/confidence model, jika tersedia dan valid secara statistik.</li>
+<li>Penjelasan lokal dari LIME.</li>
+</ol>
+
+<h3>23.2 Usulan Formula/Aturan Penilaian Risiko <span class="tag tag-validate">PERLU VALIDASI</span></h3>
+<p>Berikut adalah <b>usulan awal</b> mekanisme penilaian risiko berbasis aturan, yang belum didukung penelitian atau pengujian empiris dan wajib divalidasi sebelum digunakan sebagai aturan final:</p>
+<div class="table-wrap">
+<table>
+<caption>Usulan Pemetaan Kategori Risiko (Draft, Belum Divalidasi)</caption>
+<tr><th>Kondisi (Usulan)</th><th>Usulan Tingkat Risiko</th></tr>
+<tr><td>Label = Normal, 0 indikator pola terdeteksi</td><td><span class="risk-chip risk-low">Rendah</span></td></tr>
+<tr><td>Label = Promosi, 0–1 indikator pola ringan (mis. iming-iming wajar)</td><td><span class="risk-chip risk-low">Rendah</span> – <span class="risk-chip risk-med">Sedang</span></td></tr>
+<tr><td>Label = Scam atau ≥2 indikator pola terdeteksi</td><td><span class="risk-chip risk-med">Sedang</span></td></tr>
+<tr><td>Label = Scam dengan indikator permintaan info sensitif, ancaman, atau tautan palsu</td><td><span class="risk-chip risk-high">Tinggi</span></td></tr>
+</table>
+</div>
+<div class="callout need-validation"><span class="tag tag-validate">PERLU VALIDASI</span> Ambang jumlah indikator, bobot per indikator, dan interaksi dengan confidence model <b>belum ditentukan secara final</b> dan harus divalidasi melalui pengujian pada data nyata serta tinjauan pakar domain sebelum dijadikan aturan produksi.</div>
+
+<h3>23.3 Penanganan Kasus Ambigu</h3>
+<p>Kasus di mana klasifikasi dan indikator pola memberikan sinyal bertentangan (mis. label Normal namun terdapat indikator permintaan OTP) harus ditangani dengan aturan eksplisit yang condong ke arah risiko lebih tinggi sebagai prinsip kehati-hatian <span class="tag tag-validate">[PERLU VALIDASI]</span> — prinsip ini perlu diuji agar tidak menghasilkan terlalu banyak false positive.</p>
+
+<h3>23.4 Metode Validasi</h3>
+<ul>
+<li>Pengujian aturan risiko terhadap himpunan kasus uji berlabel manual oleh pakar/tim domain.</li>
+<li>Peninjauan berkala aturan berdasarkan umpan balik kasus false positive/negative yang ditemukan.</li>
+<li>Pencatatan versi aturan risiko agar perubahan dapat ditelusuri.</li>
+</ul>
+
+<div class="callout danger"><b>Penegasan penting:</b> risiko rendah <b>tidak menjamin</b> pesan aman, dan risiko tinggi <b>bukan bukti mutlak</b> terjadinya penipuan. Pernyataan ini wajib ditampilkan di antarmuka setiap kali hasil risiko ditampilkan (lihat Bab 25).</div>
+</section>
+<section class="chapter" id="bab24">
+<h2>24. OCR dan Analisis Screenshot <span class="tag tag-future">Tahap Lanjutan</span></h2>
+<h3>24.1 Ringkasan</h3>
+<p>Fitur ini memungkinkan pengguna mengunggah screenshot percakapan (WhatsApp, SMS, email, pesan jual beli) untuk diekstraksi teksnya menggunakan OCR, kemudian diproses melalui pipeline analisis teks yang sama dengan input manual. Teknologi OCR yang direncanakan adalah <b>Tesseract</b>.</p>
+
+<h3>24.2 Alur Detail</h3>
+<ol>
+<li>Pengguna memilih atau menyeret file gambar ke area unggah.</li>
+<li>Sistem memeriksa format, ukuran, dan kelayakan file.</li>
+<li>Sistem menampilkan preview gambar.</li>
+<li>OCR mengekstraksi teks yang dapat dibaca.</li>
+<li>Sistem menampilkan hasil ekstraksi dalam kolom teks yang dapat diedit.</li>
+<li>Pengguna memeriksa dan memperbaiki teks jika hasil OCR tidak akurat.</li>
+<li>Pengguna mengonfirmasi teks yang akan dianalisis.</li>
+<li>Backend menjalankan pipeline analisis teks yang sama dengan fitur input manual.</li>
+<li>Sistem menampilkan hasil klasifikasi, indikator pola, risiko, dan penjelasan yang tersedia.</li>
+</ol>
+
+<h3>24.3 Keterbatasan OCR yang Wajib Diantisipasi</h3>
+<ul>
+<li>Screenshot buram atau beresolusi rendah.</li>
+<li>Teks berukuran sangat kecil.</li>
+<li>Campuran bahasa dalam satu percakapan.</li>
+<li>Tata letak kompleks (gelembung chat bertumpuk, emoji, stiker, watermark).</li>
+<li>Pesan yang terpotong akibat tangkapan layar tidak lengkap.</li>
+</ul>
+<div class="callout warn">OCR <b>tidak boleh langsung dianggap benar seluruhnya</b>. Pengguna selalu diberi kesempatan memeriksa dan mengoreksi hasil ekstraksi sebelum teks dikirim ke pipeline analisis (lihat state &ldquo;Text extraction requires review&rdquo; pada Bab 12.3).</div>
+
+<h3>24.4 Status Implementasi</h3>
+<p>Endpoint <code class="inline">/api/v1/analyze-image</code>, integrasi Tesseract, dan komponen frontend terkait (<code class="inline">ImageUploadZone</code>, <code class="inline">OcrTextEditor</code>) <b>belum diimplementasikan</b> pada tahap penyusunan dokumen ini. Lihat Bab 17.3 untuk kontrak API yang diusulkan dan Bab 30 Tahap 5 untuk rencana implementasi.</p>
+</section>
+
+<section class="chapter" id="bab25">
+<h2>25. Kontrak Data</h2>
+<div class="table-wrap">
+<table>
+<caption>Ketentuan Kontrak Frontend–Backend</caption>
+<tr><th>Aspek</th><th>Ketentuan</th></tr>
+<tr><td>Format request/response</td><td>JSON untuk <code class="inline">/analyze</code> dan <code class="inline">/health</code>; multipart/form-data untuk <code class="inline">/analyze-image</code> (lanjutan)</td></tr>
+<tr><td>Validasi data</td><td>Pydantic schema di backend; validasi klien di frontend sebagai lapisan pengalaman cepat, bukan satu-satunya lapisan keamanan</td></tr>
+<tr><td>HTTP status</td><td>200 sukses (termasuk sukses sebagian, mis. LIME gagal), 400 input tidak valid, 422 gagal diproses, 503 komponen tidak tersedia, 500 kegagalan internal</td></tr>
+<tr><td>Format error</td><td>Struktur konsisten: <code class="inline">request_status</code>, <code class="inline">error_code</code>, <code class="inline">message</code> (lihat Bab 17.4)</td></tr>
+<tr><td>Timeout</td><td>Frontend menerapkan batas waktu tunggu request <span class="tag tag-validate">[PERLU VALIDASI]</span> nilai detik yang sesuai setelah pengukuran performa model aktual</td></tr>
+<tr><td>Model unavailable</td><td>Dikomunikasikan via <code class="inline">error_code: MODEL_UNAVAILABLE</code>, ditampilkan sebagai banner status, bukan hasil kosong yang membingungkan</td></tr>
+<tr><td>API versioning</td><td>Prefix <code class="inline">/api/v1/</code> digunakan sejak awal agar perubahan kontrak di masa depan tidak memutus klien lama</td></tr>
+<tr><td>CORS (pengembangan)</td><td>Origin frontend lokal diizinkan secara eksplisit melalui konfigurasi <code class="inline">CORS_ORIGINS</code></td></tr>
+<tr><td>Environment variables</td><td>Base URL API, batas panjang teks, dan flag fitur dikelola via file <code class="inline">.env</code> terpisah frontend/backend</td></tr>
+<tr><td>Batas ukuran request</td><td>Panjang teks maksimum dan ukuran file gambar maksimum (lihat Bab 26)</td></tr>
+<tr><td>Request analisis screenshot</td><td>Diproses dua tahap: ekstraksi OCR (respons sementara dapat dikoreksi) → konfirmasi → analisis teks final menggunakan kontrak <code class="inline">/analyze</code> yang sama</td></tr>
+</table>
+</div>
+<div class="callout danger">Frontend <b>tidak boleh</b> menciptakan hasil prediksi sendiri (mis. mensimulasikan klasifikasi di sisi klien) atau mengganti error backend dengan hasil analisis palsu agar tampilan terlihat &ldquo;berhasil&rdquo;.</div>
+</section>
+<section class="chapter" id="bab26">
+<h2>26. Keamanan dan Privasi</h2>
+<div class="table-wrap">
+<table>
+<caption>Ketentuan Keamanan dan Privasi</caption>
+<tr><th>Aspek</th><th>Ketentuan</th></tr>
+<tr><td>Batas ukuran teks</td><td>Panjang maksimum teks input ditegakkan di backend (bukan hanya frontend) <span class="tag tag-validate">[PERLU VALIDASI]</span> nilai pasti</td></tr>
+<tr><td>Validasi file gambar</td><td>Pemeriksaan tipe MIME aktual (bukan hanya ekstensi), dimensi, dan integritas file sebelum diproses OCR</td></tr>
+<tr><td>Pembatasan tipe file</td><td>Hanya format gambar umum (jpg/png) diterima; tipe lain ditolak eksplisit</td></tr>
+<tr><td>Batas waktu pemrosesan</td><td>Timeout diterapkan pada proses inference, LIME, dan OCR agar request tidak menggantung tanpa batas</td></tr>
+<tr><td>Penanganan file sementara</td><td>Gambar yang diunggah disimpan sementara hanya selama diperlukan untuk OCR</td></tr>
+<tr><td>Penghapusan file sementara</td><td>File sementara dihapus segera setelah pemrosesan selesai apabila tidak diperlukan lagi</td></tr>
+<tr><td>Tidak menyimpan pesan permanen</td><td>Teks pesan pengguna tidak disimpan secara permanen tanpa kebutuhan dan persetujuan eksplisit yang jelas</td></tr>
+<tr><td>Logging</td><td>Isi pesan sensitif tidak dicatat ke log secara default; log hanya memuat metadata teknis (status, durasi, kode error)</td></tr>
+<tr><td>Environment secrets</td><td>Kredensial dan konfigurasi sensitif dikelola melalui environment variables, tidak disimpan dalam kode sumber</td></tr>
+<tr><td>Penanganan error</td><td>Pesan error ke klien tidak membocorkan detail internal (stack trace, path sistem, dsb.)</td></tr>
+<tr><td>Perlindungan input besar</td><td>Request yang melebihi batas ukuran ditolak sebelum diproses lebih lanjut untuk mencegah penyalahgunaan sumber daya</td></tr>
+<tr><td>Keterbatasan OCR</td><td>OCR dapat secara tidak sengaja mengekstraksi informasi pribadi dari screenshot (nomor telepon, nama); pengguna diberi peringatan dan kesempatan mengedit/menghapus sebelum analisis</td></tr>
+</table>
+</div>
+<div class="callout warn">Dokumen ini <b>tidak mengklaim kepatuhan</b> terhadap standar sertifikasi keamanan atau privasi tertentu (mis. ISO 27001, SOC 2) tanpa bukti audit yang relevan.</div>
+</section>
+
+<section class="chapter" id="bab27">
+<h2>27. Strategi Pengujian</h2>
+<h3>27.1 Skenario Pengujian</h3>
+<div class="table-wrap">
+<table>
+<caption>Daftar Skenario Uji</caption>
+<tr><th>Kategori</th><th>Skenario</th></tr>
+<tr><td rowspan="3">Input Teks</td><td>Input kosong</td></tr>
+<tr><td>Teks sangat panjang (mendekati/di atas batas)</td></tr>
+<tr><td>Teks ambigu (campuran promosi dan indikator pola ringan)</td></tr>
+<tr><td rowspan="3">Klasifikasi</td><td>Pesan Normal yang jelas</td></tr>
+<tr><td>Pesan Promosi yang jelas</td></tr>
+<tr><td>Pesan Scam yang jelas</td></tr>
+<tr><td rowspan="2">Kualitas Deteksi</td><td>Kasus false positive (pesan sah terdeteksi berisiko)</td></tr>
+<tr><td>Kasus false negative (pesan scam tidak terdeteksi)</td></tr>
+<tr><td rowspan="3">Ketahanan Sistem</td><td>API/backend tidak tersedia</td></tr>
+<tr><td>Model gagal dimuat</td></tr>
+<tr><td>LIME gagal menghasilkan penjelasan</td></tr>
+<tr><td rowspan="5">OCR/Screenshot</td><td>Gambar rusak/corrupt</td></tr>
+<tr><td>Format gambar tidak didukung</td></tr>
+<tr><td>OCR tidak menemukan teks</td></tr>
+<tr><td>OCR menghasilkan teks yang salah</td></tr>
+<tr><td>Screenshot dengan teks kecil/buram</td></tr>
+<tr><td>Interaksi Pengguna</td><td>Pengguna mengoreksi hasil OCR sebelum analisis</td></tr>
+<tr><td>Privasi</td><td>Pemeriksaan penanganan file sementara dan tidak adanya penyimpanan permanen tanpa izin</td></tr>
+<tr><td>UI</td><td>Responsivitas tampilan pada berbagai ukuran layar</td></tr>
+</table>
+</div>
+
+<h3>27.2 Metrik Evaluasi Klasifikasi</h3>
+<ul>
+<li>Accuracy, Precision, Recall, F1-score (per kelas dan makro/weighted average).</li>
+<li>Confusion matrix 3×3 (Normal/Scam/Promosi).</li>
+<li>Untuk deteksi pola bila menggunakan pendekatan multi-label: precision/recall/F1 per label, serta metrik agregat (micro/macro F1) dengan penjelasan cara perhitungannya.</li>
+</ul>
+<div class="callout danger">Tabel hasil pengujian <b>tidak boleh diisi dengan angka fiktif</b>. Gunakan kolom &ldquo;Hasil Aktual&rdquo; yang hanya diisi setelah pengujian benar-benar dilakukan pada model dan dataset nyata (lihat template Bab 28).</div>
+</section>
+
+<section class="chapter" id="bab28">
+<h2>28. Evaluasi Model</h2>
+<p>Berikut adalah <b>template</b> pelaporan evaluasi model yang akan diisi setelah eksperimen aktual dilakukan. Seluruh sel pada kolom hasil saat ini kosong/belum terisi karena training belum dilaksanakan.</p>
+<div class="table-wrap">
+<table>
+<caption>Template Hasil Evaluasi (Belum Diisi — Menunggu Eksperimen Aktual)</caption>
+<tr><th>Model</th><th>Accuracy</th><th>Precision (makro)</th><th>Recall (makro)</th><th>F1-score (makro)</th><th>Catatan</th></tr>
+<tr><td>Baseline: TF-IDF + Logistic Regression</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Menunggu eksperimen aktual</td></tr>
+<tr><td>Model Utama: IndoBERT (fine-tuned)</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Menunggu eksperimen aktual</td></tr>
+</table>
+</div>
+<h3>28.1 Hal yang Perlu Dilaporkan Setelah Evaluasi</h3>
+<ul>
+<li>Confusion matrix lengkap per model.</li>
+<li>Metrik per kelas (Normal/Scam/Promosi), tidak hanya rata-rata.</li>
+<li>Perbandingan waktu inference baseline vs. model utama.</li>
+<li>Analisis kasus kegagalan (contoh pesan yang salah diklasifikasikan beserta kemungkinan penyebab).</li>
+<li>Kesimpulan apakah IndoBERT memberikan peningkatan yang signifikan secara terukur dibanding baseline, berdasarkan data nyata — bukan asumsi.</li>
+</ul>
+</section>
+<section class="chapter" id="bab29">
+<h2>29. Struktur Folder Proyek</h2>
+<p>Struktur folder frontend dan backend dirancang terpisah dengan lapisan abstraksi secukupnya untuk kebutuhan prototipe (lihat juga Bab 15.7 dan 16.1 untuk rincian frontend/backend).</p>
+<div class="grid-2">
+<div>
+<h4>Frontend</h4>
+<pre>frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── api/
+│   ├── types/
+│   ├── hooks/
+│   ├── styles/
+│   └── utils/
+├── public/
+├── .env.example
+└── package.json</pre>
+</div>
+<div>
+<h4>Backend</h4>
+<pre>backend/
+├── app/
+│   ├── routers/
+│   ├── schemas/
+│   ├── services/
+│   ├── ml/
+│   │   ├── model_loader.py
+│   │   ├── training/       # Skrip training (terpisah dari inference)
+│   │   ├── evaluation/     # Skrip evaluasi
+│   │   └── artifacts/      # Tidak masuk VCS (besar/sensitif)
+│   ├── core/
+│   └── utils/
+├── tests/
+├── docs/
+├── .env.example
+└── requirements.txt</pre>
+</div>
+</div>
+<h3>29.1 Fungsi Folder Utama</h3>
+<ul>
+<li><b>ml/training/</b> — skrip untuk menjalankan eksperimen training baseline dan fine-tuning IndoBERT; dijalankan offline, tidak dipanggil oleh server produksi.</li>
+<li><b>ml/evaluation/</b> — skrip evaluasi metrik dan pembuatan laporan (Bab 28).</li>
+<li><b>ml/artifacts/</b> — lokasi penyimpanan model terlatih; dikecualikan dari version control melalui <code class="inline">.gitignore</code> karena berukuran besar atau berpotensi sensitif.</li>
+<li><b>tests/</b> — unit test, integration test, dan API test (Bab 27).</li>
+<li><b>docs/</b> — dokumentasi instalasi, penggunaan, dan hasil eksperimen aktual.</li>
+</ul>
+<p>Struktur ini sengaja menghindari lapisan abstraksi berlebih (mis. tidak perlu microservice terpisah untuk setiap komponen ML) karena skala prototipe penelitian belum membutuhkannya.</p>
+</section>
+
+<section class="chapter" id="bab30">
+<h2>30. Roadmap Implementasi</h2>
+<p>Roadmap disusun dalam enam tahap. Setiap tahap mencantumkan tujuan, aktivitas, dependensi, keluaran, kriteria penerimaan, risiko, dan syarat sebelum melanjutkan. Roadmap ini <b>bukan pernyataan</b> bahwa seluruh tahap telah selesai dilaksanakan.</p>
+
+<div class="card">
+<h3>Tahap 1 — Fondasi dan UI Frontend</h3>
+<p><b>Tujuan:</b> Menyiapkan dasar antarmuka sebelum backend dan model tersedia.</p>
+<p><b>Aktivitas:</b> Menyiapkan struktur proyek frontend; menerapkan design system NalarAman (Bab 13); membuat halaman analisis teks; menyiapkan state input/loading/error/hasil; membuat batas integrasi API; memastikan mock data (jika dipakai untuk pengembangan UI) diberi label jelas sebagai data tiruan.</p>
+<p><b>Dependensi:</b> Tidak ada (tahap awal).</p>
+<p><b>Keluaran:</b> Frontend awal yang siap diintegrasikan, <b>bukan</b> sistem AI yang sudah berfungsi.</p>
+<p><b>Kriteria Penerimaan:</b> Seluruh state UI (Bab 12.3) dapat didemonstrasikan dengan data tiruan berlabel jelas; design token diterapkan konsisten.</p>
+<p><b>Risiko:</b> Mock data disalahpahami sebagai hasil nyata jika tidak diberi label. <b>Mitigasi:</b> penanda visual eksplisit &ldquo;Contoh/Ilustrasi&rdquo; pada seluruh data tiruan.</p>
+<p><b>Syarat lanjut ke Tahap 2:</b> UI dasar stabil dan seluruh state terdefinisi telah didemonstrasikan.</p>
+</div>
+
+<div class="card">
+<h3>Tahap 2 — Backend dan Kontrak API</h3>
+<p><b>Tujuan:</b> Menghadirkan layanan backend dan kontrak API yang dapat diuji.</p>
+<p><b>Aktivitas:</b> Menyiapkan struktur FastAPI; membuat health endpoint; membuat endpoint analisis (awalnya dapat mengembalikan status <code class="inline">MODEL_UNAVAILABLE</code> jika model belum ada); menentukan schema request/response; mengintegrasikan frontend dengan backend; menangani error dan validasi.</p>
+<p><b>Dependensi:</b> Tahap 1 (kontrak data frontend).</p>
+<p><b>Keluaran:</b> Layanan backend dan kontrak API yang dapat diuji.</p>
+<p><b>Kriteria Penerimaan:</b> Endpoint <code class="inline">/health</code> dan <code class="inline">/analyze</code> merespons sesuai schema (Bab 17); error ditangani sesuai Bab 17.4.</p>
+<p><b>Risiko:</b> Analisis AI nyata dianggap sudah tersedia padahal model belum diintegrasikan. <b>Mitigasi:</b> status komponen selalu eksplisit melalui <code class="inline">/health</code>.</p>
+<p><b>Syarat lanjut ke Tahap 3:</b> Kontrak API stabil dan terdokumentasi.</p>
+</div>
+
+<div class="card">
+<h3>Tahap 3 — Dataset dan Model Klasifikasi</h3>
+<p><b>Tujuan:</b> Menghasilkan model klasifikasi yang benar-benar dilatih dan dievaluasi.</p>
+<p><b>Aktivitas:</b> Memperoleh dataset; memvalidasi kualitas dan label (Bab 18); membuat preprocessing; menyusun pembagian data; membuat baseline TF-IDF+LR; fine-tuning IndoBERT; mengevaluasi dan membandingkan model (Bab 28); menyimpan artefak model; mengintegrasikan model terpilih ke backend.</p>
+<p><b>Dependensi:</b> Tahap 2 (backend siap memuat model).</p>
+<p><b>Keluaran:</b> Model yang telah dilatih dan dievaluasi secara nyata, terintegrasi ke endpoint <code class="inline">/analyze</code>.</p>
+<p><b>Kriteria Penerimaan:</b> Tabel evaluasi (Bab 28) terisi dengan hasil aktual; model dapat dimuat backend dan menghasilkan prediksi pada data uji.</p>
+<p><b>Risiko:</b> Dataset tidak tersedia/tidak memadai; ketidakseimbangan kelas. <b>Mitigasi:</b> lihat Bab 33.</p>
+<p><b>Syarat lanjut ke Tahap 4:</b> Minimal satu model (baseline) berhasil dievaluasi dan terintegrasi.</p>
+</div>
+
+<div class="card">
+<h3>Tahap 4 — Deteksi Pola, XAI, dan Risiko</h3>
+<p><b>Tujuan:</b> Melengkapi pipeline dengan komponen penjelasan dan penilaian risiko.</p>
+<p><b>Aktivitas:</b> Menetapkan pendekatan deteksi pola (Bab 21); mengintegrasikan deteksi indikator; mengintegrasikan LIME (Bab 22); menetapkan aturan risiko yang dapat diuji (Bab 23); menampilkan hasil secara terpisah; menguji kasus ambigu, false positive, dan false negative.</p>
+<p><b>Dependensi:</b> Tahap 3 (model klasifikasi tersedia).</p>
+<p><b>Keluaran:</b> Pipeline analisis yang menjelaskan hasil berdasarkan komponen yang benar-benar tersedia.</p>
+<p><b>Kriteria Penerimaan:</b> Response <code class="inline">/analyze</code> memuat klasifikasi, indikator pola, risiko, dan status LIME (tersedia/tidak) sesuai Bab 17.2.</p>
+<p><b>Risiko:</b> Aturan risiko belum tervalidasi (Bab 23.2). <b>Mitigasi:</b> label <span class="tag tag-validate">PERLU VALIDASI</span> tetap melekat sampai pengujian selesai.</p>
+<p><b>Syarat lanjut ke Tahap 5:</b> Pipeline analisis teks end-to-end berfungsi dan teruji pada skenario Bab 27.1.</p>
+</div>
+
+<div class="card">
+<h3>Tahap 5 — OCR dan Screenshot</h3>
+<p><b>Tujuan:</b> Menghadirkan alur analisis screenshot yang telah diuji.</p>
+<p><b>Aktivitas:</b> Menambahkan unggah gambar; memvalidasi gambar; membuat preview; mengintegrasikan Tesseract; menampilkan teks hasil OCR; memungkinkan pengguna memperbaiki teks; menghubungkan hasil OCR ke pipeline analisis (Tahap 4); menangani kegagalan OCR.</p>
+<p><b>Dependensi:</b> Tahap 4 (pipeline analisis teks stabil).</p>
+<p><b>Keluaran:</b> Alur analisis screenshot yang telah diuji (Bab 24).</p>
+<p><b>Kriteria Penerimaan:</b> Endpoint <code class="inline">/analyze-image</code> berfungsi sesuai kontrak Bab 17.3; pengguna dapat mengoreksi hasil OCR sebelum analisis.</p>
+<p><b>Risiko:</b> OCR salah membaca pesan; screenshot mengandung informasi pribadi (Bab 33). <b>Mitigasi:</b> review wajib sebelum konfirmasi, penghapusan file sementara (Bab 26).</p>
+<p><b>Syarat lanjut ke Tahap 6:</b> Alur screenshot lolos skenario uji OCR (Bab 27.1).</p>
+</div>
+
+<div class="card">
+<h3>Tahap 6 — Pengujian dan Dokumentasi</h3>
+<p><b>Tujuan:</b> Memastikan kualitas sistem secara menyeluruh dan mendokumentasikan hasil nyata.</p>
+<p><b>Aktivitas:</b> Unit test; integration test; API test; pengujian UI responsif; pengujian pipeline AI; evaluasi model; pengujian OCR; pemeriksaan privasi; dokumentasi instalasi dan penggunaan; dokumentasi hasil eksperimen aktual; dokumentasi keterbatasan sistem.</p>
+<p><b>Dependensi:</b> Tahap 1–5 selesai.</p>
+<p><b>Keluaran:</b> Sistem teruji dengan dokumentasi lengkap dan jujur mengenai hasil aktual serta keterbatasannya.</p>
+<p><b>Kriteria Penerimaan:</b> Seluruh skenario uji Bab 27.1 memiliki hasil tercatat; dokumentasi keterbatasan (Bab 34) tersedia dan selaras dengan temuan pengujian.</p>
+<p><b>Risiko:</b> Tekanan waktu menyebabkan dokumentasi tidak lengkap. <b>Mitigasi:</b> dokumentasi dikerjakan paralel dengan pengujian, bukan di akhir saja.</p>
+</div>
+</section>
+<section class="chapter" id="bab31">
+<h2>31. Acceptance Criteria</h2>
+<div class="table-wrap">
+<table>
+<caption>Acceptance Criteria Minimal</caption>
+<tr><th>#</th><th>Kriteria</th></tr>
+<tr><td>1</td><td>Pengguna dapat memasukkan teks ke kolom input dan memicu analisis.</td></tr>
+<tr><td>2</td><td>Input kosong ditolak atau ditangani dengan pesan yang sesuai, tanpa mengirim request ke backend.</td></tr>
+<tr><td>3</td><td>Frontend berkomunikasi dengan backend sesuai kontrak Bab 17 dan 25.</td></tr>
+<tr><td>4</td><td>Backend memvalidasi request menggunakan schema Pydantic sebelum diproses.</td></tr>
+<tr><td>5</td><td>Hasil klasifikasi yang ditampilkan berasal dari model aktual yang telah dimuat, bukan data tiruan.</td></tr>
+<tr><td>6</td><td>Deteksi pola memiliki dasar yang terdokumentasi (aturan/model) dan dapat ditinjau.</td></tr>
+<tr><td>7</td><td>Penilaian risiko mengikuti aturan yang dapat ditinjau dan tercatat versinya.</td></tr>
+<tr><td>8</td><td>LIME tidak pernah digantikan dengan penjelasan statis/fiktif; status tidak tersedia ditampilkan jelas saat gagal.</td></tr>
+<tr><td>9</td><td>Error (model unavailable, LIME gagal, backend tidak tersedia) ditampilkan dengan pesan yang jelas kepada pengguna.</td></tr>
+<tr><td>10</td><td>Screenshot baru dianggap berhasil dianalisis setelah OCR dan pipeline analisis teks berhasil dijalankan.</td></tr>
+<tr><td>11</td><td>Teks hasil OCR dapat diperiksa dan diedit pengguna sebelum analisis dijalankan.</td></tr>
+<tr><td>12</td><td>File sementara (gambar unggahan) ditangani dan dihapus dengan aman sesuai Bab 26.</td></tr>
+<tr><td>13</td><td>Keterbatasan sistem (Bab 34) ditampilkan secara wajar pada hasil analisis.</td></tr>
+<tr><td>14</td><td>Mock data tidak pernah disamarkan sebagai hasil prediksi nyata di lingkungan manapun, termasuk demo.</td></tr>
+</table>
+</div>
+</section>
+
+<section class="chapter" id="bab32">
+<h2>32. Definition of Done</h2>
+<p>Sebuah fitur dianggap <i>done</i> apabila memenuhi seluruh kondisi berikut:</p>
+<ul>
+<li>Kode telah melalui review dan lolos test yang relevan (unit/integration/API sesuai Bab 27).</li>
+<li>Fitur berfungsi sesuai kontrak API/data yang terdokumentasi (Bab 17, 25) tanpa menyimpang tanpa dokumentasi.</li>
+<li>Seluruh state UI terkait (Bab 12.3) telah diimplementasikan dan diuji, termasuk jalur kegagalan.</li>
+<li>Tidak ada data tiruan yang ditampilkan sebagai hasil nyata pada build yang akan dirilis/didemonstrasikan.</li>
+<li>Dokumentasi terkait (instalasi, penggunaan, keterbatasan) diperbarui sesuai perubahan.</li>
+<li>Untuk fitur ML: hasil evaluasi aktual tercatat (Bab 28), bukan estimasi.</li>
+<li>Untuk fitur keamanan/privasi: ketentuan Bab 26 telah diverifikasi berlaku pada implementasi.</li>
+<li>Peninjau (reviewer) menyatakan fitur dapat diterima berdasarkan acceptance criteria terkait (Bab 31).</li>
+</ul>
+</section>
+
+<section class="chapter" id="bab33">
+<h2>33. Risiko dan Mitigasi</h2>
+<div class="table-wrap">
+<table>
+<caption>Analisis Risiko Proyek</caption>
+<tr><th>Risiko</th><th>Dampak</th><th>Kemungkinan</th><th>Mitigasi</th><th>Risiko Residual</th></tr>
+<tr><td>Dataset tidak tersedia</td><td>Tinggi — proyek ML tidak dapat dimulai</td><td>Sedang <span class="tag tag-validate">estimasi awal</span></td><td>Mencari sumber dataset alternatif, kolaborasi akademik, atau membangun dataset kecil terkurasi manual</td><td>Jadwal mundur jika sumber tidak ditemukan</td></tr>
+<tr><td>Label dataset tidak sesuai kebutuhan</td><td>Sedang–Tinggi</td><td>Sedang</td><td>Proses validasi label (Bab 18.1) sebelum digunakan; anotasi ulang sebagian jika perlu</td><td>Biaya waktu anotasi tambahan</td></tr>
+<tr><td>Data leakage</td><td>Tinggi — evaluasi menyesatkan</td><td>Sedang</td><td>Pemeriksaan duplikasi antar split sebelum training (Bab 18.1)</td><td>Residual kecil jika pemeriksaan konsisten dilakukan</td></tr>
+<tr><td>Ketidakseimbangan kelas</td><td>Sedang</td><td>Tinggi <span class="tag tag-validate">estimasi awal</span></td><td>Analisis distribusi kelas, teknik penyeimbangan/evaluasi per kelas (Bab 18.1, 28)</td><td>Performa kelas minoritas tetap perlu dipantau</td></tr>
+<tr><td>Overfitting</td><td>Sedang–Tinggi</td><td>Sedang</td><td>Validation set terpisah, early stopping, regularisasi</td><td>Perlu pengujian pada data benar-benar baru</td></tr>
+<tr><td>Generalisasi model terbatas</td><td>Sedang</td><td>Sedang–Tinggi</td><td>Evaluasi pada variasi sumber pesan, dokumentasi keterbatasan (Bab 34)</td><td>Model tetap terbatas pada cakupan dataset training</td></tr>
+<tr><td>False positive/negative</td><td>Tinggi — kepercayaan pengguna</td><td>Sedang–Tinggi</td><td>Pengujian skenario Bab 27.1, peringatan keterbatasan di UI (Bab 25)</td><td>Tidak dapat dihilangkan sepenuhnya; dimitigasi dengan transparansi</td></tr>
+<tr><td>Deteksi pola rule-based terlalu sederhana</td><td>Sedang</td><td>Sedang–Tinggi</td><td>Iterasi aturan berdasarkan hasil uji (Bab 21.3), evaluasi berkala</td><td>Aturan tetap memiliki batas konteks</td></tr>
+<tr><td>Interpretasi LIME tidak stabil</td><td>Sedang</td><td>Sedang <span class="tag tag-validate">estimasi awal</span></td><td>Pengujian stabilitas pada sampel berulang, penanganan kegagalan eksplisit (Bab 22)</td><td>Variasi kecil antar run tetap mungkin terjadi</td></tr>
+<tr><td>Waktu inference terlalu lama</td><td>Sedang</td><td>Sedang <span class="tag tag-validate">estimasi awal</span></td><td>Pengukuran performa pada perangkat aktual (Bab 17.4, 28), optimasi model jika perlu</td><td>Bergantung pada kapasitas infrastruktur akhir</td></tr>
+<tr><td>Keterbatasan VRAM GPU</td><td>Sedang — menghambat training lokal</td><td>Sedang–Tinggi (VRAM 4GB, lihat Bab 28)</td><td>Batch size kecil, gradient accumulation, atau Google Colab sebagai alternatif (Bab 28)</td><td>Waktu training lebih lama</td></tr>
+<tr><td>OCR salah membaca pesan</td><td>Sedang–Tinggi</td><td>Tinggi (umum pada OCR gambar nyata)</td><td>Review wajib hasil OCR oleh pengguna sebelum analisis (Bab 24.3)</td><td>Tetap bergantung pada ketelitian pengguna saat koreksi</td></tr>
+<tr><td>Screenshot mengandung informasi pribadi</td><td>Tinggi — privasi</td><td>Sedang–Tinggi</td><td>Penghapusan file sementara, tidak menyimpan permanen (Bab 26), peringatan kepada pengguna</td><td>Risiko tetap ada selama pemrosesan berlangsung</td></tr>
+<tr><td>Pengguna salah menafsirkan risiko rendah sebagai jaminan aman</td><td>Tinggi — keselamatan pengguna</td><td>Sedang–Tinggi</td><td>Peringatan eksplisit dan konsisten di seluruh hasil (Bab 23.4, 25)</td><td>Bergantung pada literasi pengguna terhadap peringatan</td></tr>
+<tr><td>Model gagal dimuat/API tidak tersedia</td><td>Sedang</td><td>Rendah–Sedang</td><td>Health check, status eksplisit, backend tetap berjalan tanpa hasil palsu (Bab 16.4)</td><td>Downtime komponen tetap mungkin terjadi</td></tr>
+</table>
+</div>
+</section>
+<section class="chapter" id="bab34">
+<h2>34. Keterbatasan Sistem</h2>
+<div class="card">
+<ul>
+<li>Model hanya dapat diandalkan sejauh kualitas data dan evaluasinya mendukung — bukan jaminan kebenaran universal.</li>
+<li>Model <b>tidak menjamin</b> semua penipuan akan terdeteksi.</li>
+<li>Pesan berlabel Normal atau berisiko rendah <b>tidak otomatis berarti aman</b>.</li>
+<li>Pesan berisiko tinggi <b>bukan bukti mutlak</b> terjadinya penipuan.</li>
+<li>LIME menjelaskan perilaku model secara lokal pada satu input, bukan kebenaran kausal mutlak.</li>
+<li>Deteksi pola berbasis aturan tidak selalu memahami seluruh konteks percakapan secara menyeluruh.</li>
+<li>OCR dapat salah membaca teks, terutama pada gambar buram, teks kecil, atau tata letak kompleks.</li>
+<li>Sistem <b>tidak menggantikan</b> verifikasi melalui saluran resmi (call center bank, layanan pelanggan e-commerce, dsb.).</li>
+<li>Cakupan kemampuan model mengikuti dataset dan pengujian yang benar-benar dilakukan — belum mencakup seluruh variasi bahasa dan modus penipuan yang mungkin muncul di dunia nyata.</li>
+</ul>
+</div>
+</section>
+
+<section class="chapter" id="bab35">
+<h2>35. Pengembangan Masa Depan</h2>
+<p>Fitur-fitur berikut <b>tidak termasuk</b> dalam ruang lingkup MVP maupun tahap lanjutan OCR, namun dicatat sebagai kemungkinan pengembangan masa depan apabila relevan dan didukung kebutuhan serta sumber daya:</p>
+<div class="grid-2">
+<ul>
+<li>Login dan registrasi pengguna.</li>
+<li>Dashboard admin untuk pemantauan sistem.</li>
+<li>Penyimpanan riwayat analisis dengan persetujuan eksplisit pengguna.</li>
+<li>Database pengguna.</li>
+<li>Chatbot konsultasi lanjutan.</li>
+</ul>
+<ul>
+<li>Notifikasi otomatis.</li>
+<li>Integrasi langsung ke akun WhatsApp, SMS, email, atau media sosial.</li>
+<li>Ekstensi browser untuk pemeriksaan pesan secara langsung.</li>
+<li>Pelaporan otomatis kepada pihak berwenang.</li>
+<li>Sistem pembayaran dan monetisasi.</li>
+</ul>
+</div>
+</section>
+
+<section class="chapter" id="bab36">
+<h2>36. Glosarium</h2>
+<div class="table-wrap">
+<table>
+<tr><th>Istilah</th><th>Definisi</th></tr>
+<tr><td>XAI (Explainable AI)</td><td>Pendekatan AI yang berupaya menjelaskan alasan di balik prediksi model agar dapat dipahami manusia.</td></tr>
+<tr><td>LIME</td><td>Local Interpretable Model-agnostic Explanations; metode menjelaskan prediksi model secara lokal pada satu input.</td></tr>
+<tr><td>Social Engineering</td><td>Teknik manipulasi psikologis untuk mendorong korban melakukan tindakan yang merugikan dirinya.</td></tr>
+<tr><td>IndoBERT</td><td>Model bahasa berbasis arsitektur BERT yang dilatih untuk teks berbahasa Indonesia.</td></tr>
+<tr><td>TF-IDF</td><td>Term Frequency–Inverse Document Frequency; teknik representasi teks berbasis frekuensi kata.</td></tr>
+<tr><td>Logistic Regression</td><td>Algoritma klasifikasi linier yang umum digunakan sebagai baseline.</td></tr>
+<tr><td>OCR</td><td>Optical Character Recognition; teknologi ekstraksi teks dari gambar.</td></tr>
+<tr><td>Tesseract</td><td>Mesin OCR open-source yang direncanakan digunakan pada fitur screenshot.</td></tr>
+<tr><td>Rule-based Detection</td><td>Pendekatan deteksi berbasis aturan/kata kunci yang terdokumentasi, bukan model pembelajaran mesin.</td></tr>
+<tr><td>Multi-label Classification</td><td>Pendekatan klasifikasi di mana satu input dapat memiliki lebih dari satu label sekaligus.</td></tr>
+<tr><td>Confidence/Probabilitas</td><td>Skor keyakinan model terhadap suatu prediksi, bila tersedia dan valid secara statistik.</td></tr>
+<tr><td>Data Leakage</td><td>Kondisi di mana informasi dari data uji/validasi secara tidak sengaja memengaruhi proses training.</td></tr>
+<tr><td>Checkpoint</td><td>Salinan bobot model yang disimpan pada titik waktu tertentu selama training.</td></tr>
+<tr><td>MVP</td><td>Minimum Viable Product; versi produk dengan fitur minimal namun fungsional untuk divalidasi.</td></tr>
+</table>
+</div>
+</section>
+
+<section class="chapter" id="bab37">
+<h2>37. Lampiran Teknis</h2>
+<h3>37.1 Pertimbangan Perangkat Pengembangan</h3>
+<div class="table-wrap">
+<table>
+<caption>Spesifikasi Lingkungan Pengembangan yang Diketahui (Dapat Berubah)</caption>
+<tr><th>Komponen</th><th>Spesifikasi</th></tr>
+<tr><td>Sistem Operasi</td><td>Windows</td></tr>
+<tr><td>Python</td><td>3.12.10</td></tr>
+<tr><td>pip</td><td>25.0.1</td></tr>
+<tr><td>CPU</td><td>AMD Ryzen 5 7535HS, 6 core / 12 thread</td></tr>
+<tr><td>RAM</td><td>16 GB</td></tr>
+<tr><td>GPU</td><td>NVIDIA GeForce RTX 3050 Laptop GPU, VRAM 4 GB</td></tr>
+<tr><td>Penyimpanan</td><td>SSD ±477 GB, ruang kosong terakhir dilaporkan ±118 GB</td></tr>
+</table>
+</div>
+<div class="callout need-validation">
+<span class="tag tag-validate">PERLU VALIDASI</span> Data spesifikasi ini merupakan informasi awal dan dapat berubah. Hal-hal berikut perlu dipertimbangkan dan divalidasi melalui eksperimen nyata, <b>bukan dijamin pasti berhasil</b>:
+<ul>
+<li>Baseline TF-IDF + Logistic Regression digunakan sebagai eksperimen awal karena ringan dan tidak bergantung GPU.</li>
+<li>Fine-tuning IndoBERT menggunakan konfigurasi konservatif (batch size kecil sebagai titik awal pengujian, bukan jaminan konfigurasi final) mengingat keterbatasan VRAM 4GB.</li>
+<li>Checkpoint yang tidak diperlukan dikurangi untuk menghemat ruang disk (±118 GB ruang kosong terakhir dilaporkan).</li>
+<li>Pengelolaan cache model dan virtual environment perlu direncanakan agar tidak memenuhi ruang penyimpanan.</li>
+<li>Google Colab dicatat sebagai alternatif jika eksperimen lokal tidak memungkinkan karena keterbatasan VRAM.</li>
+</ul>
+Training IndoBERT <b>tidak dijamin</b> berjalan lancar pada perangkat ini — kebutuhan memori harus divalidasi melalui eksperimen nyata, bukan asumsi. Instalasi dependensi besar atau perubahan versi Python <b>belum dicatat</b> sebagai pekerjaan yang telah selesai pada tahap penyusunan dokumen ini.
+</div>
+
+<h3>37.2 Daftar Asumsi Dokumen</h3>
+<ul>
+<li>Dataset akhir yang akan digunakan dapat berbeda dari angka awal 1.143 pesan yang disebutkan di Bab 18 — angka tersebut belum terverifikasi.</li>
+<li>Pemilihan rule-based detection sebagai pendekatan MVP deteksi pola (Bab 21.2) dapat ditinjau ulang setelah dataset dan anotasi tambahan tersedia.</li>
+<li>Seluruh ambang, bobot, dan formula pada penilaian risiko (Bab 23.2) bersifat usulan awal dan wajib divalidasi sebelum digunakan sebagai aturan produksi.</li>
+<li>Jadwal enam tahap roadmap (Bab 30) tidak mencantumkan estimasi durasi waktu pasti karena bergantung pada ketersediaan dataset dan sumber daya tim.</li>
+</ul>
+
+<h3>37.3 Riwayat Versi Dokumen</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Versi</th><th>Tanggal</th><th>Perubahan</th></tr>
+<tr><td>0.1.0</td><td>11 Oktober 2026</td><td>Draft awal PRD NalarAman disusun berdasarkan master prompt; seluruh bab 1–37 diisi dengan spesifikasi awal, asumsi ditandai eksplisit.</td></tr>
+</table>
+</div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  PRD NalarAman — Versi 0.1.0 — Draft untuk Tinjauan — Disusun 11 Oktober 2026<br>
+  Dokumen ini adalah pedoman implementasi bertahap, bukan laporan hasil eksperimen final. Bagian yang ditandai <span class="tag tag-validate">PERLU VALIDASI</span> memerlukan tinjauan dan pengujian lebih lanjut sebelum dijadikan keputusan akhir.
+</footer>
+
+</body>
+</html>

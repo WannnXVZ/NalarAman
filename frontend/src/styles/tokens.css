@@ -1,0 +1,82 @@
+:root {
+  /* Brand Palettes (PRD Bab 13) */
+  --primary-purple: #6D28D9;
+  --primary-purple-hover: #5B21B6;
+  --accent-purple: #8B5CF6;
+  --accent-purple-light: #A78BFA;
+  --accent-purple-subtle: #DDD6FE;
+  --dark-purple: #2E1065;
+  --deep-purple: #1E0847;
+  --lavender-bg: #F5F3FF;
+  --lavender-surface: #EDE9FE;
+
+  /* Surfaces & Neutrals */
+  --white: #FFFFFF;
+  --surface-glass: rgba(255, 255, 255, 0.85);
+  --border-neutral: #E5E7EB;
+  --border-lavender: #DDD6FE;
+  --border-lavender-glow: rgba(139, 92, 246, 0.35);
+
+  /* Typography Colors */
+  --text-primary: #172033;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-inverse: #FFFFFF;
+
+  /* Risk Semantics (PRD Bab 13.2) */
+  --risk-low: #15803D;
+  --risk-low-bg: #DCFCE7;
+  --risk-low-border: #86EFAC;
+
+  --risk-med: #B45309;
+  --risk-med-bg: #FEF3C7;
+  --risk-med-border: #FDE68A;
+
+  --risk-high: #B91C1C;
+  --risk-high-bg: #FEE2E2;
+  --risk-high-border: #FCA5A5;
+
+  /* Classification Colors */
+  --class-normal: #15803D;
+  --class-normal-bg: #F0FDF4;
+  --class-scam: #B91C1C;
+  --class-scam-bg: #FEF2F2;
+  --class-promo: #2563EB;
+  --class-promo-bg: #EFF6FF;
+
+  /* Spacing Scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Border Radii */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(46, 16, 101, 0.04);
+  --shadow-md: 0 4px 12px rgba(46, 16, 101, 0.06);
+  --shadow-lg: 0 10px 25px -3px rgba(46, 16, 101, 0.08), 0 4px 6px -2px rgba(46, 16, 101, 0.04);
+  --shadow-xl: 0 20px 35px -5px rgba(46, 16, 101, 0.12);
+  --shadow-glow: 0 0 20px rgba(109, 40, 217, 0.25);
+
+  /* Typography Families */
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
