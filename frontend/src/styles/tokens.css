@@ -1,5 +1,7 @@
 :root {
   /* Brand Palettes (PRD Bab 13) */
+  --primary: #6D28D9;
+  --primary-hover: #5B21B6;
   --primary-purple: #6D28D9;
   --primary-purple-hover: #5B21B6;
   --accent-purple: #8B5CF6;
@@ -14,6 +16,7 @@
   --white: #FFFFFF;
   --surface-glass: rgba(255, 255, 255, 0.85);
   --border-neutral: #E5E7EB;
+  --border-color: #E5E7EB;
   --border-lavender: #DDD6FE;
   --border-lavender-glow: rgba(139, 92, 246, 0.35);
 

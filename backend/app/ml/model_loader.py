@@ -60,11 +60,12 @@ class ModelManager:
         return label, round(confidence, 4)
 
     def get_components_status(self) -> Dict[str, str]:
+        from app.services.ocr_service import ocr_service
         return {
             "classification_model": "ready" if self.is_ready else "not_trained",
             "baseline_model": "ready" if self.is_ready else "not_configured",
             "lime_explainer": "ready",
-            "ocr_engine": "not_configured"
+            "ocr_engine": "ready" if ocr_service.is_ready else "configured"
         }
 
 model_manager = ModelManager.get_instance()

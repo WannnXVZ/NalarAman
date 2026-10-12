@@ -58,9 +58,22 @@ export interface HealthResponse {
   timestamp: string;
 }
 
+export interface OcrExtractionData {
+  extracted_text: string;
+  confidence: number;
+  requires_review: boolean;
+  word_count: number;
+}
+
+export interface OcrResponse {
+  request_status: 'ocr_extracted';
+  ocr_result: OcrExtractionData;
+  warnings: string[];
+}
+
 export interface ApiError {
   request_status: 'error';
-  error_code: 'INVALID_INPUT' | 'MODEL_UNAVAILABLE' | 'LIME_FAILED' | 'INTERNAL_ERROR' | 'NETWORK_ERROR';
+  error_code: 'INVALID_INPUT' | 'MODEL_UNAVAILABLE' | 'LIME_FAILED' | 'OCR_FAILED' | 'INTERNAL_ERROR' | 'NETWORK_ERROR';
   message: string;
   detail?: unknown;
 }
@@ -72,4 +85,7 @@ export type UIState =
   | 'success'
   | 'error'
   | 'model_unavailable'
-  | 'lime_unavailable';
+  | 'lime_unavailable'
+  | 'ocr_processing'
+  | 'ocr_success'
+  | 'ocr_failed';

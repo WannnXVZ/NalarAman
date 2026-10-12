@@ -232,3 +232,40 @@ export function getMockResponseForScenario(scenario: 'scam' | 'promo' | 'normal'
     ],
   };
 }
+
+/**
+ * Mengunggah file screenshot chat dan mengekstrak teks via Tesseract OCR (PRD Bab 17.3 & 24)
+ */
+export async function uploadAndExtractImage(file: File): Promise<import('../types/analysis').OcrResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/v1/analyze-image`, {
+      method: 'POST',
+      body: formData,
+      signal: AbortSignal.timeout(15000), // Batas waktu 15 detik untuk OCR
+    });
+
+    if (!response.ok) {
+      let errJson: any = null;
+      try {
+        errJson = await response.json();
+      } catch {
+        // Abaikan parse error
+      }
+      const message = errJson?.message || `Ekstraksi OCR gagal (${response.status})`;
+      const errorCode = errJson?.error_code || (response.status === 422 ? 'OCR_FAILED' : 'INTERNAL_ERROR');
+      throw new ApiException(message, errorCode, errJson?.detail);
+    }
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof ApiException) throw error;
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
+      throw new ApiException('Waktu pemrosesan OCR gambar habis (timeout 15 detik).', 'NETWORK_ERROR');
+    }
+    throw new ApiException('Gagal menghubungi endpoint OCR backend.', 'NETWORK_ERROR', error);
+  }
+}
+

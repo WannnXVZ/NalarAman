@@ -6,9 +6,13 @@ from app.core.exceptions import (
     ModelUnavailableException,
     model_unavailable_handler,
     InvalidInputException,
-    invalid_input_handler
+    invalid_input_handler,
+    OcrFailedException,
+    ocr_failed_handler,
+    AppException,
+    app_exception_handler
 )
-from app.routers import health, analyze
+from app.routers import health, analyze, analyze_image
 
 # Setup logging
 setup_logging()
@@ -33,10 +37,13 @@ app.add_middleware(
 # Exception Handlers
 app.add_exception_handler(ModelUnavailableException, model_unavailable_handler)
 app.add_exception_handler(InvalidInputException, invalid_input_handler)
+app.add_exception_handler(OcrFailedException, ocr_failed_handler)
+app.add_exception_handler(AppException, app_exception_handler)
 
 # Register Routers
 app.include_router(health.router, prefix=settings.API_V1_PREFIX)
 app.include_router(analyze.router, prefix=settings.API_V1_PREFIX)
+app.include_router(analyze_image.router, prefix=settings.API_V1_PREFIX)
 
 @app.get("/")
 def root():

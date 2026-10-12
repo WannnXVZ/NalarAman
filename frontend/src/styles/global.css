@@ -99,6 +99,67 @@ textarea, input {
   border-color: var(--accent-purple-light);
 }
 
+/* Base Card Utility */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border-lavender);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+}
+
+/* Button Utilities */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-main);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-purple) 100%);
+  color: var(--white);
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.25);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #F8FAFC;
+  color: var(--text-primary);
+  border: 1px solid var(--border-neutral);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #F1F5F9;
+  color: var(--primary);
+  border-color: var(--border-lavender);
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: var(--font-xs);
+}
+
 /* Badge Base */
 .badge {
   display: inline-flex;

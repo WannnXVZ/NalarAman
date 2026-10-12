@@ -48,33 +48,39 @@ export const LimeExplanationPanel: React.FC<LimeExplanationPanelProps> = ({ expl
           </div>
 
           <div className="contributions-list">
-            {contributions.map((item, idx) => {
-              const isSupportingScam = item.direction === 'mendukung_scam';
-              const absWeight = Math.min(Math.abs(item.weight), 1);
-              const percentageWidth = Math.max(Math.round(absWeight * 100), 12);
+            {(() => {
+              const maxAbsWeight = Math.max(...contributions.map(c => Math.abs(c.weight)), 0.01);
 
-              return (
-                <div key={idx} className="contribution-row">
-                  <div className="token-label-col">
-                    <code className="token-code">{item.token}</code>
-                    <span className="token-score">
-                      {item.weight > 0 ? `+${item.weight.toFixed(2)}` : item.weight.toFixed(2)}
-                    </span>
-                  </div>
+              return contributions.map((item, idx) => {
+                const isSupportingScam = item.direction === 'mendukung_scam';
+                const absWeight = Math.abs(item.weight);
+                // Skala relatif proporsional terhadap kata berbobot tertinggi (maksimal 88% lebar, minimal 18% agar tag terbaca)
+                const relativeRatio = absWeight / maxAbsWeight;
+                const percentageWidth = Math.max(Math.round(relativeRatio * 88), 18);
 
-                  <div className="bar-track-col">
-                    <div
-                      className={`bar-fill ${isSupportingScam ? 'bar-scam' : 'bar-normal'}`}
-                      style={{ width: `${percentageWidth}%` }}
-                    >
-                      <span className="bar-tag">
-                        {isSupportingScam ? 'Pemicu Risiko' : 'Mereduksi Risiko'}
+                return (
+                  <div key={idx} className="contribution-row">
+                    <div className="token-label-col">
+                      <code className="token-code">{item.token}</code>
+                      <span className="token-score">
+                        {item.weight > 0 ? `+${item.weight.toFixed(2)}` : item.weight.toFixed(2)}
                       </span>
                     </div>
+
+                    <div className="bar-track-col">
+                      <div
+                        className={`bar-fill ${isSupportingScam ? 'bar-scam' : 'bar-normal'}`}
+                        style={{ width: `${percentageWidth}%` }}
+                      >
+                        <span className="bar-tag">
+                          {isSupportingScam ? 'Pemicu Risiko' : 'Mereduksi Risiko'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
           </div>
 
           <div className="lime-educational-callout">

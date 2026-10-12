@@ -25,18 +25,20 @@ export const PatternIndicatorList: React.FC<PatternIndicatorListProps> = ({ indi
       </p>
 
       {hasIndicators ? (
-        <div className="indicators-grid">
+        <div className={`indicators-grid count-${indicators.length}`}>
           {indicators.map((item, index) => (
             <div key={index} className="indicator-item-card">
               <div className="item-header">
-                <div className="item-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                  </svg>
+                <div className="item-title-group">
+                  <div className="item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                  </div>
+                  <h4 className="item-name">{item.indicator}</h4>
                 </div>
-                <h4 className="item-name">{item.indicator}</h4>
                 <span className="basis-tag">{item.basis}</span>
               </div>
               <p className="item-description">{item.description}</p>
@@ -122,12 +124,35 @@ export const PatternIndicatorList: React.FC<PatternIndicatorListProps> = ({ indi
         .indicators-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: var(--space-3);
+          gap: var(--space-4);
+          width: 100%;
         }
 
+        /* Responsive & Flexible Multi-Column Distribution */
         @media (min-width: 640px) {
-          .indicators-grid {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          /* Jika hanya 1 item: Full 1 kolom (100%) */
+          .indicators-grid.count-1 {
+            grid-template-columns: 1fr;
+          }
+
+          /* Jika 2 item: Dibagi 2 rata (50% : 50%) memenuhi kolom tanpa ruang kosong */
+          .indicators-grid.count-2 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          /* Jika 3 item: Dibagi 3 rata (33.3% : 33.3% : 33.3%) memenuhi kolom */
+          .indicators-grid.count-3 {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          /* Jika 4 item: Dibagi 2 kolom x 2 baris seimbang */
+          .indicators-grid.count-4 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          /* Fallback jika ada lebih dari 4 item: auto-fit membagi rata */
+          .indicators-grid:not(.count-1):not(.count-2):not(.count-3):not(.count-4) {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           }
         }
 
@@ -136,7 +161,12 @@ export const PatternIndicatorList: React.FC<PatternIndicatorListProps> = ({ indi
           border: 1.5px solid #FED7AA;
           border-radius: var(--radius-md);
           padding: var(--space-4);
-          transition: transform var(--transition-fast);
+          transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .indicator-item-card:hover {
@@ -146,30 +176,44 @@ export const PatternIndicatorList: React.FC<PatternIndicatorListProps> = ({ indi
 
         .item-header {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
+          justify-content: space-between;
           gap: var(--space-2);
           margin-bottom: var(--space-2);
+          flex-wrap: wrap;
+        }
+
+        .item-title-group {
+          display: flex;
+          align-items: flex-start;
+          gap: var(--space-2);
+          flex: 1;
+          min-width: 170px;
         }
 
         .item-icon {
           color: #EA580C;
           flex-shrink: 0;
+          margin-top: 2px;
         }
 
         .item-name {
           font-size: 0.9375rem;
           font-weight: 700;
           color: #9A3412;
-          flex: 1;
+          line-height: 1.35;
+          margin: 0;
         }
 
         .basis-tag {
           font-size: 0.6875rem;
           background: #FFEDD5;
           color: #9A3412;
-          padding: 2px 6px;
+          padding: 2px 8px;
           border-radius: var(--radius-sm);
           font-family: var(--font-mono);
+          white-space: nowrap;
+          align-self: flex-start;
         }
 
         .item-description {
